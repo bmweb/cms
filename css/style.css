@@ -1,0 +1,80 @@
+/* 
+    Document   : style
+    Created on : 22 Sep, 2013, 10:10:49 PM
+    Author     : Sonam
+    Description:
+        Purpose of the stylesheet follows.
+*/
+#headerContainer {
+    padding: 2px 50px;
+    color: #ffffff;
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+#headerContainer.blue {
+    background: #39a5cf;
+}
+#headerContainer.green {
+    background: #40939c;
+}
+#headerContainer.red {
+    background: #ea413d;
+}
+#headerContainer.orange {
+    background: #fabb00;
+}
+#headerContainer.grey {
+    background: #888888;
+}
+#headerContainer.purple {
+    background: #664bb0;
+}
+#headerContainer.magenta {
+    background: #d12362;
+}
+
+#headerContainer h1{
+    font-family: 'Helvetica Neue','OpenSansLight','Helvetica','Arial',sans-serif;
+    font-size: 40px;
+    font-weight: 100;
+    margin-bottom: 10px;
+}
+#headerContainer p{
+    font-size: 15px;
+    font-weight: 200;
+    margin: 0;
+    margin-top: 10px;
+}
+
+#headerSecondaryContainer {
+    padding: 10px 40px;
+    background: #eee;
+    color: #000;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: 12px;
+}
+.breadcrumb a, .breadcrumb > .active, .breadcrumb span.divider {
+    color: white;
+}
+.breadcrumb > li {
+
+    text-shadow: none;
+}
+#footer {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-top: 1px solid #DDDDDD;
+    padding-top: 20px;
+}
+table.items th {
+    background-color: #FBFBFB;
+    background-image: -moz-linear-gradient(center top , #FBFBFB, #E0E0E0);
+}
+table.items th a {
+    color: #2B2B2B;
+}
