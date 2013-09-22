@@ -18,7 +18,7 @@ array('label'=>'List <?php echo $this->modelClass; ?>','url'=>array('index')),
 array('label'=>'Manage <?php echo $this->modelClass; ?>','url'=>array('admin')),
 );
 ?>
-<div class="page-header">
-    <h1>Create <?php echo $this->modelClass; ?></h1>
-</div>
+
+<?php echo "<?php Yii::app()->params['mod_title'] = 'Create $this->modelClass';?>"; ?>
+	    
 <?php echo "<?php echo \$this->renderPartial('_form', array('model'=>\$model)); ?>"; ?>

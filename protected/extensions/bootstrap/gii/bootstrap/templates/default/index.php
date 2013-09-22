@@ -18,7 +18,8 @@ array('label'=>'Manage <?php echo $this->modelClass; ?>','url'=>array('admin')),
 );
 ?>
 
-<h1><?php echo $label; ?></h1>
+
+<?php echo "<?php Yii::app()->params['mod_title'] = '$label';?>"; ?>
 
 <?php echo "<?php"; ?> $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider,

@@ -22,7 +22,6 @@ echo "\$this->breadcrumbs=array(
 	array('label'=>'Manage <?php echo $this->modelClass; ?>','url'=>array('admin')),
 	);
 	?>
-        <div class="page-header">
-            <h1>Update <?php echo $this->modelClass . " <?php echo \$model->{$this->tableSchema->primaryKey}; ?>"; ?></h1>
-        </div>
+       
+<?php echo "<?php Yii::app()->params['mod_title'] = 'Update $this->modelClass #'.\$model->{$this->tableSchema->primaryKey};?>"; ?>
 <?php echo "<?php echo \$this->renderPartial('_form',array('model'=>\$model)); ?>"; ?>

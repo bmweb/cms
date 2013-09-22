@@ -9,8 +9,8 @@ array('label'=>'Manage Unit','url'=>array('admin')),
 );
 ?>
 
-<h1>Units</h1>
 
+<?php Yii::app()->params['mod_title'] = 'Units';?>
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider,
 'itemView'=>'_view',

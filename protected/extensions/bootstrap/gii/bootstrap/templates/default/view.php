@@ -23,8 +23,8 @@ array('label'=>'Manage <?php echo $this->modelClass; ?>','url'=>array('admin')),
 );
 ?>
 
-<h1>View <?php echo $this->modelClass . " #<?php echo \$model->{$this->tableSchema->primaryKey}; ?>"; ?></h1>
 
+<?php echo "<?php Yii::app()->params['mod_title'] = 'View $this->modelClass #'.\$model->{$this->tableSchema->primaryKey};?>"; ?>
 <?php echo "<?php"; ?> $this->widget('bootstrap.widgets.TbDetailView',array(
 'data'=>$model,
 'attributes'=>array(

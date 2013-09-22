@@ -12,7 +12,5 @@ $this->breadcrumbs=array(
 	array('label'=>'Manage Unit','url'=>array('admin')),
 	);
 	?>
-        <div class="page-header">
-            <h1>Update Unit <?php echo $model->id; ?></h1>
-        </div>
-<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+       
+<?php Yii::app()->params['mod_title'] = 'Update Unit #'.$model->id;?><?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
