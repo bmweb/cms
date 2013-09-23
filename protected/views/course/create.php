@@ -9,7 +9,6 @@ array('label'=>'List Course','url'=>array('index')),
 array('label'=>'Manage Course','url'=>array('admin')),
 );
 ?>
-<div class="page-header">
-    <h1>Create Course</h1>
-</div>
+
+<?php Yii::app()->params['mod_title'] = 'Create Course';?>	    
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

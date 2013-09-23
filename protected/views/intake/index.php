@@ -1,16 +1,16 @@
 <?php
 $this->breadcrumbs=array(
-	'Courses',
+	'Intakes',
 );
 
 $this->menu=array(
-array('label'=>'Create Course','url'=>array('create')),
-array('label'=>'Manage Course','url'=>array('admin')),
+array('label'=>'Create Intake','url'=>array('create')),
+array('label'=>'Manage Intake','url'=>array('admin')),
 );
 ?>
 
 
-<?php Yii::app()->params['mod_title'] = 'Courses';?>
+<?php Yii::app()->params['mod_title'] = 'Intakes';?>
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider,
 'itemView'=>'_view',

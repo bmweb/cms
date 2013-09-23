@@ -12,7 +12,5 @@ $this->breadcrumbs=array(
 	array('label'=>'Manage Course','url'=>array('admin')),
 	);
 	?>
-        <div class="page-header">
-            <h1>Update Course <?php echo $model->id; ?></h1>
-        </div>
-<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+       
+<?php Yii::app()->params['mod_title'] = 'Update Course #'.$model->id;?><?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
