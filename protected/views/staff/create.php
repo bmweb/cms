@@ -11,4 +11,4 @@ array('label'=>'Manage Staff','url'=>array('admin')),
 ?>
 
 <?php Yii::app()->params['mod_title'] = 'Create Staff';?>	    
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model, 'userModel'=>$userModel)); ?>

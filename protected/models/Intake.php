@@ -27,8 +27,8 @@ class Intake extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
-	/**
+        public $course;
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -44,6 +44,7 @@ class Intake extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('name, start_date, end_date', 'required'),
 			array('name', 'length', 'max'=>45),
 			array('code', 'length', 'max'=>20),
 			array('start_date, end_date, cdate, mdate', 'safe'),
@@ -79,6 +80,7 @@ class Intake extends CActiveRecord
 			'end_date' => 'End Date',
 			'cdate' => 'Cdate',
 			'mdate' => 'Mdate',
+                        'course'=>'Courses',
 		);
 	}
 
@@ -105,4 +107,19 @@ class Intake extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+            $this->start_date = strtotime($this->start_date);
+            $this->start_date = date('Y-m-d',  $this->start_date);
+            $this->end_date = strtotime($this->end_date);
+            $this->end_date = date('Y-m-d',  $this->end_date);
+            $this->mdate = date('Y-m-d');
+            return parent::beforeSave();
+        }
 }

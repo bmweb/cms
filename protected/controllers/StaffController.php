@@ -57,22 +57,42 @@ class StaffController extends Controller
 	public function actionCreate()
 	{
 		$model=new Staff;
-
+                $userModel = new User;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Staff']))
 		{
 			$model->attributes=$_POST['Staff'];
-			
-			if($model->save()) {
+                        $model->photo = CUploadedFile::getInstance($model,'photo');
+                        //$model->photo_path = "/uploads/staff/".$model->photo;
+			$userModel->attributes=$_POST['User'];
+                        $valid = $userModel->validate();
+                        $valid .= $model->validate();
+			if($valid) {
+                            if($model->save()){
+                                // save login info into user table
+                                $type = ($model->type==1)?User::TRAINER:User::CLERK;
+                                $u = User::saveUserLoginInfo($userModel, $model->id, $model->name, $type);
+                                if(is_object($model->photo)) {
+                                    $imageName = $model->photo->name;
+                                    $model->photo->saveAs('uploads/staff/'.$imageName);
+                                    $image = Yii::app()->image->load('uploads/staff/'.$imageName);
+                                    $image->resize(200, 200);
+                                    $image->save('uploads/staff/thumb-'.$imageName);
+                                    $model->photo_path = "/uploads/staff/".$imageName;
+                                    $model->save();
+				}
+                                
 				Yii::app()->user->setFlash('success', 'Staff added successfully');
 				$this->redirect(array('admin'));
+                            }
 			}
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'userModel'=>$userModel,
 		));
 	}
 
@@ -84,21 +104,47 @@ class StaffController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+                $oldimage=$model->photo;
+                $type= ($model->type==1)?User::TRAINER:User::CLERK;
+                $userModel = User::model()->findByAttributes(array('user_id' => $id, 'type'=>$type));
+                $userModel->password = ""; 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Staff']))
 		{
 			$model->attributes=$_POST['Staff'];
-			if($model->save()) {
-				Yii::app()->user->setFlash('success', 'Staff updated successfully');
-				$this->redirect(array('admin'));
-			}
+                        $model->photo = CUploadedFile::getInstance($model,'photo');
+                        $userModel->attributes=$_POST['User'];
+                        $valid = $userModel->validate();
+                        $valid .= $model->validate();
+                        if($valid) {
+                            if (empty($model->photo))
+                            {
+                                    $model->photo=$oldimage;
+                            }
+                            if($model->save()) {
+                                    // update login info into user table
+                                    $u = User::updateUserLoginInfo($userModel, $userModel->user_id, $model->name, $model->type, $type);
+                                    
+                                    if(is_object($model->photo)) {
+                                        $imageName = $model->photo->name;
+                                        $model->photo->saveAs('uploads/staff/'.$imageName);
+                                        $image = Yii::app()->image->load('uploads/staff/'.$imageName);
+                                        $image->resize(200, 200);
+                                        $image->save('uploads/staff/thumb-'.$imageName);
+                                        $model->photo_path = "/uploads/staff/".$imageName;
+                                        $model->save();
+                                    }
+                                    Yii::app()->user->setFlash('success', 'Staff updated successfully');
+                                    $this->redirect(array('admin'));
+                            }
+                        }
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+                        'userModel'=>$userModel,
 		));
 	}
 

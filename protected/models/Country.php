@@ -1,40 +1,35 @@
 <?php
 
 /**
- * This is the model class for table "unit".
+ * This is the model class for table "country".
  *
- * The followings are the available columns in table 'unit':
+ * The followings are the available columns in table 'country':
  * @property integer $id
  * @property string $name
  * @property string $code
- * @property integer $course_id
- * @property string $cdate
- * @property string $mdate
- * @property integer $is_active
  *
  * The followings are the available model relations:
- * @property StaffUnitMapping[] $staffUnitMappings
- * @property Course $course
+ * @property Staff[] $staffs
+ * @property Student[] $students
  */
-class Unit extends CActiveRecord
+class Country extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Unit the static model class
+	 * @return Country the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-        
-        public $trainer;
-        /**
+
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'unit';
+		return 'country';
 	}
 
 	/**
@@ -45,14 +40,11 @@ class Unit extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('name, course_id','required'),
-			array('course_id, is_active', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>100),
-			array('code', 'length', 'max'=>20),
-			array('cdate, mdate', 'safe'),
+			array('code', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, code, course_id, cdate, mdate, is_active', 'safe', 'on'=>'search'),
+			array('id, name, code', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,8 +56,8 @@ class Unit extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'staffUnitMappings' => array(self::HAS_MANY, 'StaffUnitMapping', 'unit_id'),
-			'course' => array(self::BELONGS_TO, 'Course', 'course_id'),
+			'staffs' => array(self::HAS_MANY, 'Staff', 'country_id'),
+			'students' => array(self::HAS_MANY, 'Student', 'country_id'),
 		);
 	}
 
@@ -78,10 +70,6 @@ class Unit extends CActiveRecord
 			'id' => 'ID',
 			'name' => 'Name',
 			'code' => 'Code',
-			'course_id' => 'Course',
-			'cdate' => 'Cdate',
-			'mdate' => 'Mdate',
-			'is_active' => 'Is Active',
 		);
 	}
 
@@ -99,25 +87,9 @@ class Unit extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('code',$this->code,true);
-		$criteria->compare('course_id',$this->course_id);
-		$criteria->compare('cdate',$this->cdate,true);
-		$criteria->compare('mdate',$this->mdate,true);
-		$criteria->compare('is_active',$this->is_active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-        public function beforeSave() {
-            if($this->isNewRecord){
-                $this->cdate = date('Y-m-d');
-            }
-            else{
-                $this->cdate = strtotime($this->cdate);
-                $this->cdate = date('Y-m-d',  $this->cdate);
-            }
-           
-            $this->mdate = date('Y-m-d');
-            return parent::beforeSave();
-        }
 }

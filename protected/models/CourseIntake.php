@@ -98,4 +98,31 @@ class CourseIntake extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+           
+            $this->mdate = date('Y-m-d');
+            return parent::beforeSave();
+        }
+        public function saveIntakeCourse($data=NULL, $intakeId=NULL){
+            if($data && $intakeId){
+                foreach ($data as $val){
+                    $model = new CourseIntake;
+                    $model->course_id = $val;
+                    $model->intake_id = $intakeId;
+                    $model->save();
+                }
+            }
+            return;
+        }
+        public function deleteAllIntakeCourse($intakeId=NULL){
+            return CourseIntake::model()->deleteAll("intake_id=$intakeId");
+            
+        }
 }

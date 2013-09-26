@@ -27,6 +27,8 @@ class User extends CActiveRecord
 		return parent::model($className);
 	}
         const ADMIN=1;
+        const TRAINER=2;
+        const CLERK=3;
 
         /**
 	 * @return string the associated database table name
@@ -44,9 +46,12 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('email, password','required', 'on' => 'insert'),
 			array('user_id, type', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name, password', 'length', 'max'=>45),
 			array('email', 'length', 'max'=>100),
+                        array('email','email'),
+                        array('email','unique'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, first_name, last_name, email, password, user_id, type', 'safe', 'on'=>'search'),
@@ -74,7 +79,7 @@ class User extends CActiveRecord
 			'id' => 'ID',
 			'first_name' => 'First Name',
 			'last_name' => 'Last Name',
-			'email' => 'Email',
+			'email' => 'Username',
 			'password' => 'Password',
 			'user_id' => 'User',
 			'type' => 'Type',
@@ -112,5 +117,29 @@ class User extends CActiveRecord
                 }
             }
             return 0;
+        }
+        public function saveUserLoginInfo($data=NULL, $userId=NULL, $name=null, $type=NULL){
+            if($data){
+                $model = new User;
+                $model->email = $data->email;
+                $model->password = sha1($data->password);
+                $model->user_id = $userId;
+                $model->first_name = $name;
+                $model->type = $type;
+                $model->save();
+            }
+            return;
+        }
+         public function updateUserLoginInfo($data=NULL, $userId=NULL, $name=null, $type=NULL, $oldType=NULL){
+            if($data){
+                $model = User::model()->findByAttributes(array('user_id' => $userId, 'type'=>$oldType));
+                $model->email = $data->email;
+                $model->password = ($data->password)?sha1($data->password):$model->password;
+                $model->user_id = $userId;
+                $model->first_name = $name;
+                $model->type = ($type==1)?User::TRAINER:User::CLERK;
+                $model->save();
+            }
+            return;
         }
 }

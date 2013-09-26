@@ -66,6 +66,10 @@ class UnitController extends Controller
 			$model->attributes=$_POST['Unit'];
 			
 			if($model->save()) {
+                                //save trainer unit data
+                                if(isset($_POST['Unit']['trainer']) && is_array($_POST['Unit']['trainer']) && count($_POST['Unit']['trainer'])>0){
+                                    $r = StaffUnitMapping::saveUnitTrainer($_POST['Unit']['trainer'], $model->id);
+                                }
 				Yii::app()->user->setFlash('success', 'Unit added successfully');
 				$this->redirect(array('admin'));
 			}
@@ -87,11 +91,18 @@ class UnitController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+                $rows = StaffUnitMapping::model()->findAllByAttributes(array('unit_id'=>$id));
+		$model->trainer = CHtml::listData( $rows, 'staff_id' , 'staff_id');
+                
 		if(isset($_POST['Unit']))
 		{
 			$model->attributes=$_POST['Unit'];
 			if($model->save()) {
+                                //update unit assigned to trainer
+                                $d = StaffUnitMapping::deleteAllUnitTrainer($id);
+                                if(isset($_POST['Unit']['trainer']) && is_array($_POST['Unit']['trainer']) && count($_POST['Unit']['trainer'])>0){
+                                    $r = StaffUnitMapping::saveUnitTrainer($_POST['Unit']['trainer'], $model->id);
+                                }
 				Yii::app()->user->setFlash('success', 'Unit updated successfully');
 				$this->redirect(array('admin'));
 			}

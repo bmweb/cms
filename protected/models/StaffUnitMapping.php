@@ -98,4 +98,31 @@ class StaffUnitMapping extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+           
+            $this->mdate = date('Y-m-d');
+            return parent::beforeSave();
+        }
+        public function saveUnitTrainer($data=NULL, $unitId=NULL){
+            if($data && $unitId){
+                foreach ($data as $val){
+                    $model = new StaffUnitMapping;
+                    $model->staff_id = $val;
+                    $model->unit_id = $unitId;
+                    $model->save();
+                }
+            }
+            return;
+        }
+        public function deleteAllUnitTrainer($unitId=NULL){
+            return StaffUnitMapping::model()->deleteAll("unit_id=$unitId");
+            
+        }
 }

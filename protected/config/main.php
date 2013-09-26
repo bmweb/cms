@@ -16,6 +16,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+                'application.helpers.*',
 	),
 
 	'modules'=>array(
@@ -39,6 +40,13 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+                'image'=>array(
+                    'class'=>'application.extensions.image.CImageComponent',
+                      // GD or ImageMagick
+                      'driver'=>'GD',
+                      // ImageMagick setup path
+                      'params'=>array('directory'=>'/opt/local/bin'),
+                  ),
                 'bootstrap' => array(
                     'class' => 'ext.bootstrap.components.Bootstrap',
                     'responsiveCss' => true,

@@ -55,7 +55,7 @@ class Staff extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, email, country_id', 'required'),
+			array('name, email', 'required'),
 			array('is_active, type, country_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>50),
 			array('email', 'length', 'max'=>100),
@@ -63,6 +63,8 @@ class Staff extends CActiveRecord
 			array('city, state', 'length', 'max'=>45),
 			array('zip_code, phone, fax', 'length', 'max'=>20),
 			array('photo, photo_path, cdate, mdate, join_date', 'safe'),
+                        array('email','email'),
+                        array('email','unique'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, email, address, city, state, zip_code, phone, fax, photo, photo_path, is_active, cdate, mdate, type, country_id, join_date', 'safe', 'on'=>'search'),
@@ -142,4 +144,20 @@ class Staff extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+         public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+           
+            $this->mdate = date('Y-m-d');
+            if (!empty($this->join_date) && strtolower($this->join_date) != 'n/a') {
+                $this->join_date = strtotime ($this->join_date);
+                $this->join_date = date ('Y-m-d', $this->join_date);
+            }
+            return parent::beforeSave();
+        }
 }

@@ -66,6 +66,10 @@ class IntakeController extends Controller
 			$model->attributes=$_POST['Intake'];
 			
 			if($model->save()) {
+                                //save Intake course data
+                                if(isset($_POST['Intake']['course']) && is_array($_POST['Intake']['course']) && count($_POST['Intake']['course'])>0){
+                                    $r = CourseIntake::saveIntakeCourse($_POST['Intake']['course'], $model->id);
+                                }
 				Yii::app()->user->setFlash('success', 'Intake added successfully');
 				$this->redirect(array('admin'));
 			}
@@ -87,11 +91,17 @@ class IntakeController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+                $rows = CourseIntake::model()->findAllByAttributes(array('intake_id'=>$id));
+		$model->course = CHtml::listData( $rows, 'course_id' , 'course_id');
 		if(isset($_POST['Intake']))
 		{
 			$model->attributes=$_POST['Intake'];
 			if($model->save()) {
+                                //update unit assigned to trainer
+                                $d = CourseIntake::deleteAllIntakeCourse($id);
+                                if(isset($_POST['Intake']['course']) && is_array($_POST['Intake']['course']) && count($_POST['Intake']['course'])>0){
+                                    $r = CourseIntake::saveIntakeCourse($_POST['Intake']['course'], $model->id);
+                                }
 				Yii::app()->user->setFlash('success', 'Intake updated successfully');
 				$this->redirect(array('admin'));
 			}

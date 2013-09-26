@@ -13,4 +13,5 @@ $this->breadcrumbs=array(
 	);
 	?>
        
-<?php Yii::app()->params['mod_title'] = 'Update Staff #'.$model->id;?><?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+<?php Yii::app()->params['mod_title'] = 'Update Staff #'.$model->id;?>
+    <?php echo $this->renderPartial('_form',array('model'=>$model,'userModel'=>$userModel,)); ?>
