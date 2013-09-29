@@ -27,7 +27,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <div class="span6">
 
 
-        <?php echo $form->textFieldRow($model, 'name', array('class' => 'span10', 'maxlength' => 50)); ?>
+        <?php echo $form->textFieldRow($model, 'first_name', array('class' => 'span10', 'maxlength' => 45)); ?>
+
+
+        <?php echo $form->textFieldRow($model, 'last_name', array('class' => 'span10', 'maxlength' => 45)); ?>
 
         <?php echo $form->textFieldRow($model, 'email', array('class' => 'span10', 'maxlength' => 100)); ?>
 

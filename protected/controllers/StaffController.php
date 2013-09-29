@@ -73,7 +73,7 @@ class StaffController extends Controller
                             if($model->save()){
                                 // save login info into user table
                                 $type = ($model->type==1)?User::TRAINER:User::CLERK;
-                                $u = User::saveUserLoginInfo($userModel, $model->id, $model->name, $type);
+                                $u = User::saveUserLoginInfo($userModel, $model->id, $model->first_name, $model->last_name, $type);
                                 if(is_object($model->photo)) {
                                     $imageName = $model->photo->name;
                                     $model->photo->saveAs('uploads/staff/'.$imageName);
@@ -125,7 +125,8 @@ class StaffController extends Controller
                             }
                             if($model->save()) {
                                     // update login info into user table
-                                    $u = User::updateUserLoginInfo($userModel, $userModel->user_id, $model->name, $model->type, $type);
+                                    $typeNew = ($model->type==1)?User::TRAINER:User::CLERK;
+                                    $u = User::updateUserLoginInfo($userModel, $userModel->user_id, $model->first_name, $model->last_name, $typeNew, $type);
                                     
                                     if(is_object($model->photo)) {
                                         $imageName = $model->photo->name;

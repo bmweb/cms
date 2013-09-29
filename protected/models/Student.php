@@ -56,7 +56,7 @@ class Student extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('country_id', 'required'),
+			array('first_name, email, address1, city, state, country_id, phone', 'required'),
 			array('is_active, country_id', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name, city, state', 'length', 'max'=>45),
 			array('email', 'length', 'max'=>100),
@@ -64,6 +64,8 @@ class Student extends CActiveRecord
 			array('phone, fax, zip', 'length', 'max'=>20),
 			array('sex', 'length', 'max'=>1),
 			array('dob, photo, photo_path, cdate, mdate', 'safe'),
+                        array('email','email'),
+                        array('email','unique'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, first_name, last_name, email, address1, address2, city, state, phone, fax, zip, sex, dob, photo, photo_path, cdate, mdate, is_active, country_id', 'safe', 'on'=>'search'),
@@ -146,4 +148,20 @@ class Student extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+           
+            $this->mdate = date('Y-m-d');
+            if (!empty($this->dob) && strtolower($this->dob) != 'n/a') {
+                $this->dob = strtotime ($this->dob);
+                $this->dob = date ('Y-m-d', $this->dob);
+            }
+            return parent::beforeSave();
+        }
 }

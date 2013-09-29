@@ -29,6 +29,7 @@ class User extends CActiveRecord
         const ADMIN=1;
         const TRAINER=2;
         const CLERK=3;
+        const  STUDENT=4;
 
         /**
 	 * @return string the associated database table name
@@ -118,26 +119,28 @@ class User extends CActiveRecord
             }
             return 0;
         }
-        public function saveUserLoginInfo($data=NULL, $userId=NULL, $name=null, $type=NULL){
+        public function saveUserLoginInfo($data=NULL, $userId=NULL, $firstName=null, $lastName=null, $type=NULL){
             if($data){
                 $model = new User;
                 $model->email = $data->email;
                 $model->password = sha1($data->password);
                 $model->user_id = $userId;
-                $model->first_name = $name;
+                $model->first_name = $firstName;
+                $model->last_name = $lastName;
                 $model->type = $type;
                 $model->save();
             }
             return;
         }
-         public function updateUserLoginInfo($data=NULL, $userId=NULL, $name=null, $type=NULL, $oldType=NULL){
+         public function updateUserLoginInfo($data=NULL, $userId=NULL, $firstName=null, $lastName=null, $type=NULL, $oldType=NULL){
             if($data){
                 $model = User::model()->findByAttributes(array('user_id' => $userId, 'type'=>$oldType));
                 $model->email = $data->email;
                 $model->password = ($data->password)?sha1($data->password):$model->password;
                 $model->user_id = $userId;
-                $model->first_name = $name;
-                $model->type = ($type==1)?User::TRAINER:User::CLERK;
+                $model->first_name = $firstName;
+                $model->last_name = $lastName;
+                $model->type = $type;
                 $model->save();
             }
             return;

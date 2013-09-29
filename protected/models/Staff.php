@@ -5,7 +5,8 @@
  *
  * The followings are the available columns in table 'staff':
  * @property integer $id
- * @property string $name
+ * @property string $first_name
+ * @property string $last_name
  * @property string $email
  * @property string $address
  * @property string $city
@@ -55,9 +56,9 @@ class Staff extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, email', 'required'),
+			array('first_name, last_name, email', 'required'),
 			array('is_active, type, country_id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>50),
+			array('first_name, last_name', 'length', 'max'=>50),
 			array('email', 'length', 'max'=>100),
 			array('address', 'length', 'max'=>255),
 			array('city, state', 'length', 'max'=>45),
@@ -67,7 +68,7 @@ class Staff extends CActiveRecord
                         array('email','unique'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, email, address, city, state, zip_code, phone, fax, photo, photo_path, is_active, cdate, mdate, type, country_id, join_date', 'safe', 'on'=>'search'),
+			array('id, first_name, last_name, email, address, city, state, zip_code, phone, fax, photo, photo_path, is_active, cdate, mdate, type, country_id, join_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,7 +93,8 @@ class Staff extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'first_name' => 'First Name',
+                        'last_name' => 'Last Name',
 			'email' => 'Email',
 			'address' => 'Address',
 			'city' => 'City',
@@ -123,7 +125,8 @@ class Staff extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('first_name',$this->first_name,true);
+		$criteria->compare('last_name',$this->last_name,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('city',$this->city,true);

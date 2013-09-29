@@ -57,22 +57,39 @@ class StudentController extends Controller
 	public function actionCreate()
 	{
 		$model=new Student;
-
+                $userModel = new User;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Student']))
 		{
 			$model->attributes=$_POST['Student'];
-			
-			if($model->save()) {
-				Yii::app()->user->setFlash('success', 'Student added successfully');
-				$this->redirect(array('admin'));
-			}
+			$userModel->attributes=$_POST['User'];
+                        $model->photo = CUploadedFile::getInstance($model,'photo');
+                        $valid = $userModel->validate();
+                        $valid .= $model->validate();
+                        if($valid) {
+                            if($model->save()) {
+                                    //save student login info
+                                    
+                                    if(is_object($model->photo)) {
+                                        $imageName = $model->photo->name;
+                                        $model->photo->saveAs('uploads/student/'.$imageName);
+                                        $image = Yii::app()->image->load('uploads/student/'.$imageName);
+                                        $image->resize(200, 200);
+                                        $image->save('uploads/student/thumb-'.$imageName);
+                                        $model->photo_path = "/uploads/student/".$imageName;
+                                        $model->save();
+                                    }
+                                    Yii::app()->user->setFlash('success', 'Student added successfully');
+                                    $this->redirect(array('admin'));
+                            }
+                        }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'userModel'=>$userModel,
 		));
 	}
 
@@ -84,17 +101,38 @@ class StudentController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+                $oldimage=$model->photo;
+                $type= User::STUDENT;
+                $userModel = User::model()->findByAttributes(array('user_id' => $id, 'type'=>$type));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Student']))
 		{
 			$model->attributes=$_POST['Student'];
-			if($model->save()) {
-				Yii::app()->user->setFlash('success', 'Student updated successfully');
-				$this->redirect(array('admin'));
-			}
+                        $model->photo = CUploadedFile::getInstance($model,'photo');
+                        $userModel->attributes=$_POST['User'];
+                        $valid = $userModel->validate();
+                        $valid .= $model->validate();
+                        if($valid) {
+                            if (empty($model->photo))
+                            {
+                                    $model->photo=$oldimage;
+                            }
+                            if($model->save()) {
+                                    if(is_object($model->photo)) {
+                                        $imageName = $model->photo->name;
+                                        $model->photo->saveAs('uploads/student/'.$imageName);
+                                        $image = Yii::app()->image->load('uploads/student/'.$imageName);
+                                        $image->resize(200, 200);
+                                        $image->save('uploads/student/thumb-'.$imageName);
+                                        $model->photo_path = "/uploads/student/".$imageName;
+                                        $model->save();
+                                    }
+                                    Yii::app()->user->setFlash('success', 'Student updated successfully');
+                                    $this->redirect(array('admin'));
+                            }
+                        }
 		}
 
 		$this->render('update',array(

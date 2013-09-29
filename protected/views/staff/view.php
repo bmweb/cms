@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
 	'Staffs'=>array('index'),
-	$model->name,
+	$model->first_name,
 );
 
 $this->menu=array(
@@ -18,7 +18,8 @@ array('label'=>'Manage Staff','url'=>array('admin')),
 'data'=>$model,
 'attributes'=>array(
 		'id',
-		'name',
+		'first_name',
+                'last_name',
 		'email',
 		'address',
 		'city',
