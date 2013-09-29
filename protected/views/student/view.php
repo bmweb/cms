@@ -117,10 +117,91 @@ $this->breadcrumbs=array(
                     ?>
 
                 </div>
+                <div id="yw0_tab_7" class="tab-pane fade">
+                    <div class="span9">
+                        <legend class="serif colorCyan">Fees</legend>
+                    </div>
+                    <div>
+                        <a href="#" class="addFee btn btn-info" data-toggle="modal" data-target="#addFeeModal">Add Fee</a>
+                    </div>
+                     <?php
+                    if (!empty($studentCourseFeeMaps)) {
+                        
+                            ?>
+                            <table class="items table table-striped table-bordered">   
+                                
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Intake</th>
+                                    <th>Course Fee</th>
+                                    <th>Paid Fee</th>
+                                    <th></th>
+                                </tr>
+                                  <?php foreach ($studentCourseFeeMaps as $studentfee) { ?>
+                                <tr>
+                                  
+                                        <td><?php echo $studentfee->studentCourse->course->name; ?></td>
+                                        <td><?php echo $studentfee->studentCourse->intake->name; ?></td>
+                                        <td><?php echo Yii::app()->locale->getCurrencySymbol('AUD').$studentfee->studentCourse->course_fee; ?></td>
+                                        <td><?php echo Yii::app()->locale->getCurrencySymbol('AUD').$studentfee->paid_fee; ?></td>
+                                        
+                                        <td>
+                                            <a href="#"  data-toggle="modal" data-target="#viewFeeDetailModel<?php echo $studentfee->student_course_id; ?>" class="viewFeeDetail<?php echo $studentfee->student_course_id; ?>" alt="view fee detail">
+                                            <i class="icon-eye-open"></i></a>
+                                        </td>
+                                </tr>  
+                                <!--  view fee popup model-->
+                                <tr>
+                                    <td colspan="5">
+                                <div id="viewFeeDetailModel<?php echo $studentfee->student_course_id; ?>" class="modal hide fade">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h3>Fee Detail</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php echo $this->renderPartial('//student/courseFeeDetail', array('id'=>$studentfee->student_course_id)); ?>
+                                    </div>
+                                </div>
+                                    </td>
+                                </tr>
+                                 <?php } ?>
+                            </table>
+                            <?php
+                        
+                    }
+                    
+                      else{
+                    ?>
+                    <div class="alert marginTop20">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      No Record Found.
+                    </div>  
+                    <?php  } ?>
+                </div>
              </div>
         </div>
     </div>
-</div>   
+</div> 
+<!--  add fee popup model-->
+<div id="addFeeModel" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Add Fee</h3>
+    </div>
+    <div class="modal-body">
+        <?php echo $this->renderPartial('//student/addFee',array('id'=>$model->id)); ?>
+    </div>
+    
+</div>
+<script>
+
+$('a.addFee').click(function(e) {
+            e.preventDefault();
+            console.log('I clicked');
+
+            $('#addFeeModel').modal('show');
+        });
+</script>
     
     
     

@@ -78,3 +78,9 @@ table.items th {
 table.items th a {
     color: #2B2B2B;
 }
+.marginTop10{
+    margin-top: 10px;
+}
+.marginTop20{
+    margin-top: 20px;
+}

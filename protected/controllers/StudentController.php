@@ -29,7 +29,7 @@ class StudentController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
+				'actions'=>array('index','view','create','update','admin','delete','addFee','courseFeeDetail'),
 				'expression'=> 'User::isAdmin()',
 			),
 			
@@ -49,9 +49,17 @@ class StudentController extends Controller
                 $courses = new CActiveDataProvider('StudentCourse',array(
                     'criteria'=>array("condition"=>"student_id=$id")
                 ));
+                //get fee detail
+                $criteria = new CDbCriteria;
+                $criteria->select = "*, SUM(t.paid_fee) as paid_fee";
+                $criteria->with = array('studentCourse');
+                $criteria->condition = "studentCourse.student_id=$id";
+                $criteria->group = "student_course_id";
+                $studentCourseFeeMaps = StudentCourseFeeMap::model()->findAll($criteria);
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
                         'courses'=>$courses,
+                        'studentCourseFeeMaps'=>$studentCourseFeeMaps
 		));
 	}
 
@@ -228,5 +236,56 @@ class StudentController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        public function actionAddFee($id=null)
+	{
+               
+                $this->layout="//layouts/popup";
+                $studentCourse=array();
+                if(isset($id) && !empty($id)){
+                    $criteria = new CDbCriteria();
+                    $criteria->condition = "student_id = $id";
+                    $studentCourse = StudentCourse::model()->findAll($criteria);
+                }
+		// Uncomment the following line if AJAX validation is needed
+		//$this->performAjaxValidation($model);
+          
+                $msg = array();
+		if(isset($_POST['paid_fee']))
+		{
+                        $feeNum = count($_POST['paid_fee']);
+                        if($feeNum>0){
+                            $i=0;
+                            while ($i<$feeNum){
+                                if(!empty($_POST['paid_fee'][$i])){
+                                    $courseFee = $_POST['paid_fee'][$i];
+                                    $studentCourseId = $_POST['student_course_id'][$i];
+                                    $model=new StudentCourseFeeMap;
+                                    $model->student_course_id=  $studentCourseId;
+                                    $model->paid_fee = $courseFee;
+                                    $model->user_id = Yii::app()->user->id;
+                                    if($model->save(false)){
+                                        $msg[]='Success'; 
+                                    }
+                                }
+                                $i++;
+                            }
+                        }
+                        if(count($msg)>0){
+                            echo 'success';
+                        }
+                        
+                        Yii::app()->end();
+		}
+
+	}
+        public function actioncourseFeeDetail($id )
+	{
+		$dataProvider=new CActiveDataProvider('StudentCourseFeeMap',array(
+                    'criteria'=>array('condition'=>"student_course_id=$id")
+                ));
+		$this->renderPartial('courseFeeDetail',array(
+			'dataProvider'=>$dataProvider,
+		));
 	}
 }
