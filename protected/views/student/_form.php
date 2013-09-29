@@ -2,6 +2,9 @@
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'student-form',
     'enableAjaxValidation' => false,
+    'htmlOptions'=>array(
+        'enctype' => 'multipart/form-data',
+    ),
         ));
 ?>
 
@@ -67,8 +70,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         
         <?php echo $form->dropDownListRow($model, 'is_active', array('1' => 'Active', '0' => 'Deactive'), array('class' => 'span10')); ?>
         
-        <?php if(!empty($model->photo_path)){ ?>
-            <img src="<?php echo Yii::app()->createUrl('uploads/staff/thumb-'.$model->photo); ?>">
+        <?php if(!empty($model->photo)){ ?>
+            <img src="<?php echo Yii::app()->createUrl('uploads/student/thumb-'.$model->photo); ?>">
        <?php } ?>
        <?php echo $form->fileFieldRow($model, 'photo', array('class' => 'span10')); ?>
 

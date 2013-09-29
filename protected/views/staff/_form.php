@@ -33,7 +33,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <?php echo $form->textFieldRow($model, 'last_name', array('class' => 'span10', 'maxlength' => 45)); ?>
 
         <?php echo $form->textFieldRow($model, 'email', array('class' => 'span10', 'maxlength' => 100)); ?>
-
+        
+        <?php echo $form->dropDownListRow($model, 'sex', array('M'=>'Male','F'=>'Female'), array('class' => 'span10', 'maxlength' => 1)); ?>
+        
         <?php echo $form->textFieldRow($model, 'address', array('class' => 'span10', 'maxlength' => 255)); ?>
 
 

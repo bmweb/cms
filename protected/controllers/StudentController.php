@@ -71,7 +71,8 @@ class StudentController extends Controller
                         if($valid) {
                             if($model->save()) {
                                     //save student login info
-                                    
+                                    $type = User::STUDENT;
+                                    $u = User::saveUserLoginInfo($userModel, $model->id, $model->first_name, $model->last_name, $type);
                                     if(is_object($model->photo)) {
                                         $imageName = $model->photo->name;
                                         $model->photo->saveAs('uploads/student/'.$imageName);
@@ -104,6 +105,7 @@ class StudentController extends Controller
                 $oldimage=$model->photo;
                 $type= User::STUDENT;
                 $userModel = User::model()->findByAttributes(array('user_id' => $id, 'type'=>$type));
+                $userModel->password = ""; 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -120,6 +122,10 @@ class StudentController extends Controller
                                     $model->photo=$oldimage;
                             }
                             if($model->save()) {
+                                    // update login info into user table
+                                    $typeNew = User::STUDENT;
+                                    $u = User::updateUserLoginInfo($userModel, $userModel->user_id, $model->first_name, $model->last_name, $typeNew, $type);
+                                    
                                     if(is_object($model->photo)) {
                                         $imageName = $model->photo->name;
                                         $model->photo->saveAs('uploads/student/'.$imageName);
@@ -137,6 +143,7 @@ class StudentController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+                        'userModel'=>$userModel,
 		));
 	}
 

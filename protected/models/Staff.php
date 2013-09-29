@@ -22,6 +22,7 @@
  * @property integer $type
  * @property integer $country_id
  * @property string $join_date
+ * @property string $sex
  *
  * The followings are the available model relations:
  * @property Country $country
@@ -66,9 +67,10 @@ class Staff extends CActiveRecord
 			array('photo, photo_path, cdate, mdate, join_date', 'safe'),
                         array('email','email'),
                         array('email','unique'),
+                        array('sex', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, first_name, last_name, email, address, city, state, zip_code, phone, fax, photo, photo_path, is_active, cdate, mdate, type, country_id, join_date', 'safe', 'on'=>'search'),
+			array('id, first_name, last_name, email, address, city, state, zip_code, phone, fax, photo, photo_path, is_active, cdate, mdate, type, country_id, join_date, sex', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -110,6 +112,7 @@ class Staff extends CActiveRecord
 			'type' => 'Type',
 			'country_id' => 'Country',
 			'join_date' => 'Join Date',
+                        'sex' => 'Sex',
 		);
 	}
 
@@ -142,6 +145,7 @@ class Staff extends CActiveRecord
 		$criteria->compare('type',$this->type);
 		$criteria->compare('country_id',$this->country_id);
 		$criteria->compare('join_date',$this->join_date,true);
+                $criteria->compare('sex',$this->sex,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
