@@ -89,7 +89,7 @@ $this->breadcrumbs=array(
 	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'label'=>'Login', 'type'=>'primary')); ?>
 	<br/><br/>
 	<p>
-                <a href="<?php echo Yii::app()->request->baseUrl; ?>/forgotpassword">Forgot Password</a>
+                <a href="<?php echo Yii::app()->createUrl('site/forgotpassword'); ?>">Forgot Password</a>
 	</p>
         <?php $this->endWidget(); ?>
 

@@ -106,4 +106,78 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+        public function actionChangepassword() {
+
+        $id = Yii::app()->user->id;
+
+        $model = new Password;
+        if (isset($_POST['Password'])) {
+            $model->attributes = $_POST['Password'];
+            $password = sha1($_POST['Password']['password']);
+            $oldpassword = sha1($_POST['Password']['oldpassword']);
+            if ($model->validate()) {
+
+                $pass = User::model()->findByAttributes(array('id' => $id));
+                if (isset($pass->id)) {
+
+                    if ($pass->password == $oldpassword) {
+                        $pass->password = $password;
+                        $pass->save();
+                        Yii::app()->user->setFlash('alert alert-success', 'Password Changed Successfully');
+                        $this->redirect(array('changepassword'));
+                    } else {
+                        $model->addError('oldpassword', 'Invalid old password');
+                    }
+                }
+            }
+        }
+        $this->render('changepassword', array('model' => $model)
+        );
+    }
+     public function actionForgotPassword(){
+        $this->layout = '//layouts/naked';
+        $model = new ForgotPassword;
+	if (isset($_POST['ForgotPassword'])) {
+	    $model->attributes = $_POST['ForgotPassword'];
+	    $username = $_POST['ForgotPassword']['username'];
+	    if ($model->validate()) {
+		$username1 = User::model()->findByAttributes(array('email' => $username));
+		if (isset($username1->email)) {
+		    $length = '6';
+		    $validCharacters = "abcdefghijklmnopqrstuxyvwzABCDEFGHIJKLMNOPQRSTUXYVWZ1234567890";
+		    $validCharNumber = strlen($validCharacters);
+		    $result = "";
+		    for ($i = 0; $i < $length; $i++) {
+			$index = mt_rand(0, $validCharNumber - 1);
+			$result .= $validCharacters[$index];
+		    }
+		    $password1 = sha1($result);
+		    $post = User::model()->findByPk($username1->id);
+		    $post->password = $password1;
+		    $post->save();
+     
+//		    $data = array(
+//                                'type' => EmailTemplate::EML_FORGOT_PASSWORD,
+//                                'to' => $username1->email,
+//                                'from'=>'noreply@cms.com',
+//                                'vars' => array(
+//                                    'USER_NAME' => $username1->email,
+//                                    'PASSWORD'=>$result,
+//
+//                                )
+//                            );
+//
+//                               EmailTemplate::model()->send($data);
+
+
+		    Yii::app()->user->setFlash('alert alert-success', 'Your password have been sent to the specified email address.');
+		} else {
+		    $model->addError('username', 'This username is not associate to any user');
+		}
+	    }
+
+	   // $this->redirect(Yii::app()->request->urlReferrer);
+	}
+	$this->render('forgotPassword', array('model' => $model));
+    }
 }

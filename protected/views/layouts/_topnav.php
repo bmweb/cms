@@ -40,7 +40,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 		array('label' => 'Options', 'url' => '#', 'visible'=>!Yii::app()->user->isGuest, 'items' => array(
 		//	array('label' => 'Change Campus', 'url' => '#'),
 		//	'---',
-                        array('label' => 'Change Password', 'url' => array("user/changepassword")),
+                        array('label' => 'Change Password', 'url' => array("site/changepassword")),
 			'---',
 			array('label' => 'Logout', 'url' => array('site/logout')),
 		    )),
