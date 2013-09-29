@@ -16,7 +16,8 @@
 	    var html = "<tr><td>";
 	    html += "<select class='span6' name='course_applied[course_list][]' onchange='getintake(this.value," + i + ");'> " + '<?php echo Course::course_list('new'); ?>' + "</select></td>";
 	    html += "<td><select class='span6' name='course_applied[intake][]' id='intake_date_" + i + "'></select></td>";
-	    html += "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='<?php echo Yii::app()->baseUrl; ?>/images/error.gif'></a></td></tr>";
+	    html += "<td>Rs<input type='text' name='course_applied[course_fee][]' id='course_fee_" + i + "'/></td>";
+            html += "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='<?php echo Yii::app()->baseUrl; ?>/images/error.gif'></a></td></tr>";
 	    $("#courses").append(html);
 	});
 
@@ -130,6 +131,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <tr>
                 <th id="yw0_c0" style=" color: #000; ">Course</th>
                 <th id="yw0_c1" style=" color: #000; ">Intake</th>
+                <th id="yw0_c2" style=" color: #000; ">Course Fee</th>
 <!--                <th id="yw0_c2" style=" color: #000; ">Start Date</th>
                 <th id="yw0_c2" style=" color: #000; ">End Date</th>
                 <th id="yw0_c3" style=" color: #000; ">Course Weeks</th>-->

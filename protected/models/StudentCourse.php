@@ -114,7 +114,7 @@ class StudentCourse extends CActiveRecord
          
        if(count($courses) > 0)
        {
-           StudentCourse::model()->deleteAllByAttributes(array('student_id' => $studentId));
+           //StudentCourse::model()->deleteAllByAttributes(array('student_id' => $studentId));
            
 	    for($i=0;$i<count($courses);$i++)
                 {
@@ -123,6 +123,7 @@ class StudentCourse extends CActiveRecord
 		$studentCourseRow->student_id = $studentId;
 		$studentCourseRow->course_id = $courses['course_list'][$i];
                 $studentCourseRow->intake_id = $courses['intake'][$i];
+                $studentCourseRow->course_fee = $courses['course_fee'][$i];
                 $studentCourseRow->cdate = date('Y-m-d');
                 $studentCourseRow->mdate = date('Y-m-d');
 		$studentCourseRow->save();
@@ -138,14 +139,20 @@ class StudentCourse extends CActiveRecord
     $i=0;
     foreach($studentCourses as $courses)
     {
+        echo "<tr><td>";
+        echo $courses->course->name."</td>";
+        echo "<td>". $courses->intake->name."</td>";
+        echo "<td>Rs".$courses->course_fee."</td>";
+        echo "<td></td></tr>";
 
-                echo "<tr><td>";
-                echo "<select class='span6' name='course_applied[course_list][]' onchange='getintake(this.value,".$i.");'>".Course::course_list('update',$courses->course_id)." </select></td>";
-                echo "<td><select class='span6' name='course_applied[intake][]' id='intake_date_".$i."'>". CourseIntake::intake_list('update',$courses->course_id, $courses->intake_id)."</select></td>";
-//                echo "<td><input type='text' name='course_applied[start_date][]' id='start_date_".$i."' value='".$courses->intake_start_date."'/></td>";
-//                echo "<td><input type='text' name='course_applied[end_date][]' id='end_date_".$i."' value='".$courses->intake_end_date."' /></td>";
-//                echo "<td><input type='text' name='course_applied[course_week][]' id='course_week_".$i."' value='".$courses->course_weeks."'/></td>";
-                echo "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='".Yii::app()->baseUrl."/images/error.gif'></a></td></tr>";
+//                echo "<tr><td>";
+//                echo "<select class='span6' name='course_applied[course_list][]' onchange='getintake(this.value,".$i.");'>".Course::course_list('update',$courses->course_id)." </select></td>";
+//                echo "<td><select class='span6' name='course_applied[intake][]' id='intake_date_".$i."'>". CourseIntake::intake_list('update',$courses->course_id, $courses->intake_id)."</select></td>";
+//                echo "<td>Rs<input type='text' name='course_applied[course_fee][]' id='course_fee_".$i."' value='".$courses->course_fee."'/></td>";
+////                echo "<td><input type='text' name='course_applied[start_date][]' id='start_date_".$i."' value='".$courses->intake_start_date."'/></td>";
+////                echo "<td><input type='text' name='course_applied[end_date][]' id='end_date_".$i."' value='".$courses->intake_end_date."' /></td>";
+////                echo "<td><input type='text' name='course_applied[course_week][]' id='course_week_".$i."' value='".$courses->course_weeks."'/></td>";
+//                echo "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='".Yii::app()->baseUrl."/images/error.gif'></a></td></tr>";
 
     $i++;
     }

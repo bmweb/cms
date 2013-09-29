@@ -24,7 +24,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
     </div>
     <div class="span6">
-        <?php echo $form->checkBoxListRow($model,'trainer',  CHtml::listData(Staff::model()->findAll(array('condition'=>"is_active=1 and type=1")), 'id', 'name')) ?>
+        <?php echo $form->checkBoxListRow($model,'trainer',  CHtml::listData(Staff::model()->findAll(array('condition'=>"is_active=1 and type=1")), 'id', 'fullname')) ?>
             
         <?php //echo $form->checkBoxListRow($model, 'code', array('class' => 'span10', 'maxlength' => 20)); ?>
 
