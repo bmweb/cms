@@ -164,4 +164,12 @@ class Student extends CActiveRecord
             }
             return parent::beforeSave();
         }
+        public function getFullname()
+        {
+            return ucwords($this->first_name.' '.$this->last_name);
+        }
+        public function getFullsex()
+        {
+            return ($this->sex=='M')?"Male":"Female";
+        }
 }

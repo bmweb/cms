@@ -45,8 +45,13 @@ class StudentController extends Controller
 	 */
 	public function actionView($id)
 	{
+                //get courses of the current student
+                $courses = new CActiveDataProvider('StudentCourse',array(
+                    'criteria'=>array("condition"=>"student_id=$id")
+                ));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'courses'=>$courses,
 		));
 	}
 

@@ -83,6 +83,9 @@ class StudentCourse extends CActiveRecord
 			'course_fee' => 'Course Fee',
 			'cdate' => 'Cdate',
 			'mdate' => 'Mdate',
+                        'course.name'=>'Course',
+                        'intake.name'=>'Intake',
+                        'intake.code'=>'Intake Code'
 		);
 	}
 
