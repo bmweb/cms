@@ -1,3 +1,49 @@
+
+<script>
+    function delRow(obj)
+    {
+
+	$(obj).parents('tr:first').remove();
+    }
+
+    $(document).ready(function() {
+	$("#yw0").click(function() {
+
+	});
+	$(".course_applied").click(function() {
+	    var count = $("tr").length;
+	    var i = count - 1;
+	    var html = "<tr><td>";
+	    html += "<select class='span6' name='course_applied[course_list][]' onchange='getintake(this.value," + i + ");'> " + '<?php echo Course::course_list('new'); ?>' + "</select></td>";
+	    html += "<td><select class='span6' name='course_applied[intake][]' id='intake_date_" + i + "'></select></td>";
+	    html += "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='<?php echo Yii::app()->baseUrl; ?>/images/error.gif'></a></td></tr>";
+	    $("#courses").append(html);
+	});
+
+	
+    });
+    function getintake(id, row_id)
+    {
+
+	$.ajax({
+	    type: "POST",
+	    url: "<?php echo Yii::app()->baseUrl; ?>/intake/getintake",
+	    data: {course: id},
+	    dataType: "text",
+	    success: function(data) {
+
+		$('#intake_date_' + row_id).empty("");
+		$('#intake_date_' + row_id).append(data);
+		//  alert(data);
+	    },
+	});
+
+
+
+    }
+
+  
+</script>
 <?php
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'student-form',
@@ -77,7 +123,29 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
     </div>
 </div>
+<div class="row-fluid">
+    <legend class="serif colorCyan">Courses Detail<span class="btn btn-info course_applied" style="float: right;">Add Course</span></legend>
+    <table class="items table table-striped" id="courses" style="padding: 0px;">
+        <thead class="tableFloatingHeaderOriginal">
+            <tr>
+                <th id="yw0_c0" style=" color: #000; ">Course</th>
+                <th id="yw0_c1" style=" color: #000; ">Intake</th>
+<!--                <th id="yw0_c2" style=" color: #000; ">Start Date</th>
+                <th id="yw0_c2" style=" color: #000; ">End Date</th>
+                <th id="yw0_c3" style=" color: #000; ">Course Weeks</th>-->
+                <th class="button-column" id="yw0_c5" style=" color: #000; ">Action</th>
+            </tr>
+        </thead>
 
+        <tbody>
+	    <?php
+	    if (!empty($model->id)) {
+		StudentCourse::getStudentCourse($model->id);
+	    }
+	    ?>
+        </tbody>
+    </table>
+</div>
 <div class="form-actions">
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(

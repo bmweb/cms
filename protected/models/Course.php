@@ -132,4 +132,25 @@ class Course extends CActiveRecord
             $this->mdate = date('Y-m-d');
             return TRUE;
         }
+        public static function course_list($type,$course_id = NULL)
+           {
+                $data="";
+                $courses= Course::model()->findAll();
+		$data = "<option>---Select Course---</option>";
+                foreach($courses as $value)
+                {
+                    if($type == 'update' && $course_id == $value->id)
+                    {
+                        $selected="selected";
+
+                    }
+                    else
+                    {
+                        $selected="";
+                    }
+                        $data.=CHtml::tag('option',array('value'=>$value->id,'selected'=>$selected),CHtml::encode($value->name),true);
+                }
+
+		return $data;
+	}
 }

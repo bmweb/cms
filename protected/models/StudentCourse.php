@@ -46,8 +46,7 @@ class StudentCourse extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id, course_id, student_id, intake_id', 'numerical', 'integerOnly'=>true),
+			array('course_id, student_id, intake_id', 'numerical', 'integerOnly'=>true),
 			array('course_fee', 'numerical'),
 			array('cdate, mdate', 'safe'),
 			// The following rule is used by search().
@@ -110,4 +109,46 @@ class StudentCourse extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public static function setStudentCourse($studentId,$courses)
+    {
+         
+       if(count($courses) > 0)
+       {
+           StudentCourse::model()->deleteAllByAttributes(array('student_id' => $studentId));
+           
+	    for($i=0;$i<count($courses);$i++)
+                {
+                if(!empty($courses['course_list'][$i])){
+		$studentCourseRow = new StudentCourse;
+		$studentCourseRow->student_id = $studentId;
+		$studentCourseRow->course_id = $courses['course_list'][$i];
+                $studentCourseRow->intake_id = $courses['intake'][$i];
+                $studentCourseRow->cdate = date('Y-m-d');
+                $studentCourseRow->mdate = date('Y-m-d');
+		$studentCourseRow->save();
+              
+                }}
+       }
+       
+       
+    }
+     public static function getStudentCourse($studentId)
+    {
+    $studentCourses= StudentCourse::model()->findAll(array("condition"=>"student_id = '$studentId'"));    
+    $i=0;
+    foreach($studentCourses as $courses)
+    {
+
+                echo "<tr><td>";
+                echo "<select class='span6' name='course_applied[course_list][]' onchange='getintake(this.value,".$i.");'>".Course::course_list('update',$courses->course_id)." </select></td>";
+                echo "<td><select class='span6' name='course_applied[intake][]' id='intake_date_".$i."'>". CourseIntake::intake_list('update',$courses->course_id, $courses->intake_id)."</select></td>";
+//                echo "<td><input type='text' name='course_applied[start_date][]' id='start_date_".$i."' value='".$courses->intake_start_date."'/></td>";
+//                echo "<td><input type='text' name='course_applied[end_date][]' id='end_date_".$i."' value='".$courses->intake_end_date."' /></td>";
+//                echo "<td><input type='text' name='course_applied[course_week][]' id='course_week_".$i."' value='".$courses->course_weeks."'/></td>";
+                echo "<td><a href='javascript:void(0)' class='delete' onclick='delRow(this);'><img src='".Yii::app()->baseUrl."/images/error.gif'></a></td></tr>";
+
+    $i++;
+    }
+
+}
 }

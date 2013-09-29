@@ -82,6 +82,9 @@ class StudentController extends Controller
                                         $model->photo_path = "/uploads/student/".$imageName;
                                         $model->save();
                                     }
+                                    //save student course
+                                    $courses = $_POST['course_applied'];
+                                    StudentCourse::setStudentCourse($model->id, $courses);
                                     Yii::app()->user->setFlash('success', 'Student added successfully');
                                     $this->redirect(array('admin'));
                             }
@@ -135,6 +138,9 @@ class StudentController extends Controller
                                         $model->photo_path = "/uploads/student/".$imageName;
                                         $model->save();
                                     }
+                                    //save student course
+                                    $courses = $_POST['course_applied'];
+                                    StudentCourse::setStudentCourse($model->id, $courses);
                                     Yii::app()->user->setFlash('success', 'Student updated successfully');
                                     $this->redirect(array('admin'));
                             }

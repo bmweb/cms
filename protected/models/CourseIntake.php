@@ -125,4 +125,24 @@ class CourseIntake extends CActiveRecord
             return CourseIntake::model()->deleteAll("intake_id=$intakeId");
             
         }
+        public static function intake_list($type,$course_id = NULL, $intakeId=null)
+        {
+             $data="";  
+             $data = "<option>---Select---</option>";    
+             $courses= CourseIntake::model()->findAll(array("condition"=>"course_id='$course_id'"));
+             //$intake= StudentCourse::model()->findByAttributes(array('course_id'=>"$course_id"));
+             foreach($courses as $value)
+             {
+                 if($type == 'update' && $value->intake_id == $intakeId)
+                 { 
+                     $selected="selected";
+                 }
+                 else
+                 {
+                     $selected="";
+                 }
+                 $data.=CHtml::tag('option',array('value'=>$value->intake->id,'selected'=>$selected),CHtml::encode($value->intake->name),true);
+             }
+            return $data;
+        }
 }

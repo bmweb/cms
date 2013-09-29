@@ -27,7 +27,10 @@ class IntakeController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+			array('allow', 
+                            'actions' => array('Getintake'),
+                            'users' => array('*'),
+                        ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete'),
 				'expression'=> 'User::isAdmin()',
@@ -183,4 +186,14 @@ class IntakeController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionGetintake() {
+	$course_id = $_REQUEST['course'];
+	$data = CourseIntake::model()->findAll(array('condition'=>"course_id =  '$course_id'"));
+	echo "<option value=''>Select</option>";
+	foreach ($data as $value => $name) {
+	    echo CHtml::tag('option', array('value' => $name->intake->id), CHtml::encode($name->intake->name), true);
+	}
+       // $course_fee=  Course::model()->findByAttributes(array('id'=>$course_id));
+        echo CJSON::encode(array('fee'=>"500"));
+    }
 }
