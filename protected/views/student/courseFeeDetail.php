@@ -10,6 +10,7 @@ $dataProvider=new CActiveDataProvider('StudentCourseFeeMap',array(
 	'id'=>'student-course-fee-map-grid',
 	'dataProvider'=>$dataProvider,
 	'type'=>'striped bordered condensed',
+        'enableSorting' => false,
 	'columns'=>array(
 		//'id',
                 array(
@@ -20,7 +21,11 @@ $dataProvider=new CActiveDataProvider('StudentCourseFeeMap',array(
                     'header'=>"Intake",
                     'value'=>'$data->studentCourse->intake->name',
                 ),
-                'paid_fee',
+                array('name'=>'paid_fee',
+                      'type'=>'text',
+                      'footer'=>  StudentCourseFeeMap::model()->getTotalPaidFee($dataProvider),
+                      //'htmlOptions'=>array('style' => 'text-align: right;'),
+                    ),
                 array(
                     'header'=>"Date",
                     'value'=>'$data->cdate',

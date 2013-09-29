@@ -115,4 +115,14 @@ class StudentCourseFeeMap extends CActiveRecord
             
             return parent::beforeSave();
         }
+        public function getTotalPaidFee($dataprovider){
+            $dataprovider->setPagination(false);          
+            $rows = $dataprovider->getData();          
+            $total = 0;
+            foreach ($rows as $don){
+                $total += $don['paid_fee'];
+            }           
+              $total = "<span class=\"feeTotalTag\">".$total." = Total Paid</span>";
+              return $total;
+        }
 }
