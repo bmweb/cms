@@ -42,8 +42,12 @@ class ClassTimeTable extends CActiveRecord
 	{
 		return 'class_time_table';
 	}
-
-	/**
+        public $courseName;
+        public $intakeName;
+        public $unitName;
+        public $trainerName;
+        public $venueName;
+        /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
@@ -55,7 +59,7 @@ class ClassTimeTable extends CActiveRecord
 			array('date, from_time, to_time, cdate, mdate', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, course_id, intake_id, unit_id, trainer_id, venue_id, date, from_time, to_time, cdate, mdate', 'safe', 'on'=>'search'),
+			array('id, course_id, intake_id, unit_id, trainer_id, venue_id, date, from_time, to_time, cdate, mdate, courseName, intakeName, unitName, trainerName, venueName', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -105,8 +109,9 @@ class ClassTimeTable extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
+                $criteria->with = array('course','intake','unit','trainer','venue');
+                
+		$criteria->compare('t.id',$this->id);
 		$criteria->compare('course_id',$this->course_id);
 		$criteria->compare('intake_id',$this->intake_id);
 		$criteria->compare('unit_id',$this->unit_id);
@@ -117,6 +122,11 @@ class ClassTimeTable extends CActiveRecord
 		$criteria->compare('to_time',$this->to_time,true);
 		$criteria->compare('cdate',$this->cdate,true);
 		$criteria->compare('mdate',$this->mdate,true);
+                $criteria->compare('course.name', $this->courseName, true);
+                $criteria->compare('intake.name', $this->intakeName, true);
+                $criteria->compare('unit.name', $this->unitName, true);
+                $criteria->compare('trainer.first_name', $this->trainerName, true);
+                $criteria->compare('venue.name', $this->venueName, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -17,6 +17,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
                 'application.helpers.*',
+                'application.extensions.CJuiDateTimePicker.CJuiDateTimePicker',
 	),
 
 	'modules'=>array(

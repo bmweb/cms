@@ -42,12 +42,38 @@ return false;
 'type'=>'striped bordered condensed hover',
 'columns'=>array(
 		//'id',
-		'course_id',
+                'date',
+                array(
+                    'name'=>'courseName',
+                    'value'=>'$data->course->name',
+                    'type'=>'raw',
+                ),
+                array(
+                    'name'=>'intakeName',
+                    'value'=>'$data->intake->name',
+                    'type'=>'raw',
+                ),
+                array(
+                    'name'=>'unitName',
+                    'value'=>'$data->unit->name',
+                    'type'=>'raw',
+                ),
+                array(
+                    'name'=>'trainerName',
+                    'value'=>'$data->trainer->fullname',
+                    'type'=>'raw',
+                ),
+                array(
+                    'name'=>'venueName',
+                    'value'=>'$data->venue->name',
+                    'type'=>'raw',
+                ),
+		/*'course_id',
 		'intake_id',
 		'unit_id',
 		'trainer_id',
 		'venue_id',
-		/*
+		
 		'date',
 		'from_time',
 		'to_time',

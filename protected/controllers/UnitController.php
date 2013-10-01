@@ -29,7 +29,7 @@ class UnitController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
+				'actions'=>array('index','view','create','update','admin','delete','unitByCourse'),
 				'expression'=> 'User::isAdmin()',
 			),
 			
@@ -184,4 +184,15 @@ class UnitController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionUnitByCourse()
+        {
+                $courseId=$_REQUEST['course_id'];
+                $data=  Unit::model()->findAll(array('condition'=>"course_id = '".$courseId."'"));
+                $data=CHtml::listData($data,'id','name');
+                echo "<option value=''>--Select--</option>";
+                foreach($data as $value=>$name)
+                {
+                        echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+                }
+        }
 }

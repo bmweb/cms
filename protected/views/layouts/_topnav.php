@@ -29,6 +29,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 			'---',
                         array('label' => 'Add Student Fee', 'url' => array('fee/create')),
 			)),
+                array('label' => 'Time Table', 'url' => array('classTimeTable/admin'), 'visible' => !Yii::app()->user->isGuest),
 	
               ),
 	),

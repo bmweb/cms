@@ -29,7 +29,7 @@ class StaffController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
+				'actions'=>array('index','view','create','update','admin','delete','trainerByUnit'),
 				'expression'=> 'User::isAdmin()',
 			),
 			
@@ -220,4 +220,15 @@ class StaffController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionTrainerByUnit()
+        {
+                $unitId=$_REQUEST['unit_id'];
+                $data= StaffUnitMapping::model()->with('staff')->findAll(array('condition'=>"unit_id = '".$unitId."'"));
+                $data=CHtml::listData($data,'staff_id','staff.fullname');
+                echo "<option value=''>--Select--</option>";
+                foreach($data as $value=>$name)
+                {
+                        echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+                }
+        }
 }
