@@ -31,7 +31,25 @@
                
                 <?php echo $form->dropDownListRow($model, 'venue_id', CHtml::listData(Venue::model()->findAll(), 'id', 'name'), array('class' => 'span5', 'prompt' => '--Select--')); ?>
                 
-        	<?php echo $form->datePickerRow($model, 'date', array('class' => 'span5',
+                <?php echo $form->labelEx($model, 'date'); ?> 
+                 <?php
+                //Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+                $this->widget('CJuiDateTimePicker', array(
+                    'model' => $model, //Model object
+                    'attribute' => 'date', //attribute name
+                    'mode' => 'date', //use "time","date" or "datetime" (default)
+
+                    'options' => array(
+                        'dateFormat' => 'mm/dd/yy',
+                        'changeMonth'=>true,
+                        'changeYear'=>true,
+                        'yearRange'=>"2013:".date('Y')
+                    ), // jquery plugin options
+                    'language' => ''
+                ));
+                ?>
+                <?php echo $form->error($model, 'date'); ?>
+        	<?php /*echo $form->datePickerRow($model, 'date', array('class' => 'span5',
                     'options'=>array(
                         'format'=>'yyyy-mm-dd',
                         'language'=>'en',
@@ -39,7 +57,7 @@
                         'autoclose'=>true
                 )
 
-                    )); ?>
+                    )); */ ?>
 
                 <?php echo $form->labelEx($model, 'from_time'); ?> 
 		<?php 

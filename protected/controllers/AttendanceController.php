@@ -56,8 +56,13 @@ class AttendanceController extends Controller
 	 */
 	public function actionCreate()
 	{
+            
+                $classTimeTableId = $_GET['id'];
+                $intakeId = $_GET['intake'];
+                $unitId = $_GET['unit'];
+                echo $intakeId; exit;
 		$model=new Attendance;
-
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

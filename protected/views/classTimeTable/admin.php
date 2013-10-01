@@ -82,6 +82,15 @@ return false;
 		*/
 array(
     'class'=>'bootstrap.widgets.TbButtonColumn',
+    'headerHtmlOptions' => array('style'=>'width:80px'),
+    'template'=>'{view} {update} {delete} {attendance}',
+    'buttons'=>array(
+        'attendance'=>array(
+            'label'=>'Add Attendance',
+                'url'=>'Yii::app()->createUrl("attendance/create", array("id"=>$data->id,"intake"=>$data->intake_id,"unit"=>$data->unit_id))',
+                'icon'	=>  'list-alt'
+        )
+    ),
     
 ),
 ),
