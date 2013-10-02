@@ -67,12 +67,21 @@ class AttendanceController extends Controller
                 $criteria->condition="units.id=$unitId and studentCourses.intake_id=$intakeId";
                 $students = Student::model()->findAll($criteria);
                 $model=new Attendance;
-                
+                //check attende is done for this class
+                $attandenceRow = Attendance::model()->findAll(array('condition'=>"class_time_table_id=".$classTimeTableId));
+                if(count($attandenceRow)){
+                    foreach ($attandenceRow as $data){
+                        $attendance_detail[$data->student_id]=$data->attendance_detail;
+                    }
+                    $model->attendance_detail=$attendance_detail;
+                }
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Attendance']))
 		{
+                        //delete old attandance detail
+                        Attendance::model()->deleteAllByAttributes(array("class_time_table_id" => $classTimeTableId));
 			$model->attributes=$_POST['Attendance'];
 			if(isset($_POST['Attendance']['attendance_detail'])){
                             foreach ($_POST['Attendance']['attendance_detail'] as $studentId=>$attandence){
@@ -85,6 +94,7 @@ class AttendanceController extends Controller
                         }
 			if($model->save()) {
 				Yii::app()->user->setFlash('success', 'Attendance added successfully');
+                                $this->refresh();
 				//$this->redirect(array('admin'));
 			}
 		}
