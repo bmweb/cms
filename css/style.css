@@ -90,3 +90,16 @@ table.items th a {
     text-align: right !important;
     
 }
+.colorCyan {
+    color: #43A4D3;
+ 
+}
+.heading{
+    display: block;
+    font-size: 21px;
+    line-height: 40px;
+}
+.attendance .radio{
+     width: 30px !important;
+     float: left;
+}

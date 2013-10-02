@@ -132,4 +132,20 @@ class ClassTimeTable extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function beforeSave() {
+            if($this->isNewRecord){
+                $this->cdate = date('Y-m-d');
+            }
+            else{
+                $this->cdate = strtotime($this->cdate);
+                $this->cdate = date('Y-m-d',  $this->cdate);
+            }
+           
+            $this->mdate = date('Y-m-d');
+            if (!empty($this->date) && strtolower($this->date) != 'n/a') {
+                $this->date = strtotime ($this->date);
+                $this->date = date ('Y-m-d', $this->date);
+            }
+            return parent::beforeSave();
+        }
 }

@@ -60,8 +60,13 @@ class AttendanceController extends Controller
                 $classTimeTableId = $_GET['id'];
                 $intakeId = $_GET['intake'];
                 $unitId = $_GET['unit'];
-                echo $intakeId; exit;
-		$model=new Attendance;
+                //echo $intakeId; exit;
+                $classTimeTable = ClassTimeTable::model()->findByPk($classTimeTableId);
+                $criteria = new CDbCriteria();
+                $criteria->with = array('studentCourses','studentCourses.course','studentCourses.course.units');
+                $criteria->condition="units.id=$unitId and studentCourses.intake_id=$intakeId";
+                $students = Student::model()->findAll($criteria);
+                $model=new Attendance;
                 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -69,15 +74,25 @@ class AttendanceController extends Controller
 		if(isset($_POST['Attendance']))
 		{
 			$model->attributes=$_POST['Attendance'];
-			
+			if(isset($_POST['Attendance']['attendance_detail'])){
+                            foreach ($_POST['Attendance']['attendance_detail'] as $studentId=>$attandence){
+                                $model=new Attendance;
+                                $model->attributes=$_POST['Attendance'];
+                                $model->student_id=$studentId;
+                                $model->attendance_detail=$attandence;
+                                $model->save();
+                            }
+                        }
 			if($model->save()) {
 				Yii::app()->user->setFlash('success', 'Attendance added successfully');
-				$this->redirect(array('admin'));
+				//$this->redirect(array('admin'));
 			}
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'students'=>$students,
+                        'classTimeTable'=>$classTimeTable
 		));
 	}
 
