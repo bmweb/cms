@@ -74,6 +74,12 @@ class AttendanceController extends Controller
                         $attendance_detail[$data->student_id]=$data->attendance_detail;
                     }
                     $model->attendance_detail=$attendance_detail;
+                }else{
+                    $delauftAttendance = array();
+                    foreach ($students as $student){
+                        $delauftAttendance[$student->id]='P';
+                    }
+                    $model->attendance_detail=$delauftAttendance;
                 }
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -83,16 +89,19 @@ class AttendanceController extends Controller
                         //delete old attandance detail
                         Attendance::model()->deleteAllByAttributes(array("class_time_table_id" => $classTimeTableId));
 			$model->attributes=$_POST['Attendance'];
+                        $msg=array();
 			if(isset($_POST['Attendance']['attendance_detail'])){
                             foreach ($_POST['Attendance']['attendance_detail'] as $studentId=>$attandence){
                                 $model=new Attendance;
                                 $model->attributes=$_POST['Attendance'];
                                 $model->student_id=$studentId;
                                 $model->attendance_detail=$attandence;
-                                $model->save();
+                                if($model->save()){
+                                    $msg[]='done';
+                                }
                             }
                         }
-			if($model->save()) {
+			if(count($msg)>0) {
 				Yii::app()->user->setFlash('success', 'Attendance added successfully');
                                 $this->refresh();
 				//$this->redirect(array('admin'));

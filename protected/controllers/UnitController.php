@@ -27,10 +27,13 @@ class UnitController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+			array('allow',
+                            'actions'=>array('unitByCourse'),
+                            'users'=>array('@'),
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete','unitByCourse'),
-				'expression'=> 'User::isAdmin()',
+				'expression'=> 'User::isAdmin() || User::isOfficial()',
 			),
 			
 			array('deny',  // deny all users

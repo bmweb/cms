@@ -1,4 +1,11 @@
 <?php
+//set logged student id
+if(!Yii::app()->user->isGuest && User::isStudent()){
+    $studentId = Yii::app()->user->user_id;
+}
+else{
+    $studentId = null;
+}
 
 $this->widget('bootstrap.widgets.TbNavbar', array(
     'brand' => Yii::app()->name,
@@ -9,7 +16,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 	    'items' => array(
 		array('label' => 'Home', 'url' => '#', 'active' => true),
 		array('label' => 'Login', 'url' => array('site/login'), 'visible' => Yii::app()->user->isGuest),
-		array('label' => 'My Office', 'visible' => !Yii::app()->user->isGuest, 'items' => array(
+		array('label' => 'My Office', 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial()), 'items' => array(
 			array('label' => 'Courses', 'url' => array('course/admin')),
 			array('label' => 'Intakes', 'url' => array('intake/admin')),
 			array('label' => 'Units', 'url' => array('unit/admin')),
@@ -22,15 +29,18 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 			
 		    )),
 		
-		array('label' => 'Students', 'visible' => !Yii::app()->user->isGuest, 'items' => array(
+		array('label' => 'Students', 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial()), 'items' => array(
 			array('label' => 'List', 'url' => array('student/admin')),
                        // array('label' => 'Attendance', 'url' => array('attendance/admin')),
 			array('label' => 'Results', 'url' => array('result/admin')),
 			//'---',
                         //array('label' => 'Add Student Fee', 'url' => array('fee/create')),
 			)),
-                array('label' => 'Time Table', 'url' => array('classTimeTable/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Time Table', 'url' => array('classTimeTable/admin'), 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial())),
+                // student my profile
+                array('label' => 'My Profile', 'url' => array('student/'.$studentId), 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial())),
 	
+                
               ),
 	),
 	array(

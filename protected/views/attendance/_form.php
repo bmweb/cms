@@ -28,9 +28,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <td>
             Sr. No
         </td>
-        <td>Registration Id</td>
+        <td>Student Id</td>
         <td>Name</td>
-        <td>Attendance 1</td>
+        <td>Attendance</td>
          
     </tr>
 

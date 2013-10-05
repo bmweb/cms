@@ -57,7 +57,7 @@ class Staff extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('first_name, last_name, email', 'required'),
+			array('first_name, last_name, email, type', 'required'),
 			array('is_active, type, country_id', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name', 'length', 'max'=>50),
 			array('email', 'length', 'max'=>100),

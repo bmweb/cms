@@ -84,6 +84,12 @@ table.items th a {
 .marginTop20{
     margin-top: 20px;
 }
+.marginLeft0{
+    margin-left: 0px !important;
+}
+.marginBottom10{
+    margin-bottom: 10px;
+}
 .feeTotalTag{
     font-weight: bold;
     text-decoration: overline;

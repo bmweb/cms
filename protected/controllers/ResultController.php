@@ -68,11 +68,15 @@ class ResultController extends Controller
 		// $this->performAjaxValidation($model);
                 $students = array();
                 if (isset($_REQUEST['search'])) {
+                    if(isset($_GET['Result']['intake_id']) && $_GET['Result']['unit_id']){
                     $model->attributes = $_GET['Result'];
                     $criteria = new CDbCriteria();
                     $criteria->with = array('studentCourses','studentCourses.course.units');
                     $criteria->condition = "studentCourses.intake_id=".$_GET['Result']['intake_id']." and units.id=".$_GET['Result']['unit_id'];
                     $students = Student::model()->findAll($criteria);
+                    }else{
+                        Yii::app()->user->setFlash('error', 'Select intake, course and unit');
+                    }
                 }
 		if(isset($_POST['Result']))
 		{

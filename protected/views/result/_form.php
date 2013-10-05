@@ -1,3 +1,17 @@
+
+<script>
+$(function(){
+    $('input:checkbox').attr('checked', 'checked');
+    
+});
+$('#checkAll').live('click', (function() {
+    if($(this).is(':checked')) {
+        $('input:checkbox').attr('checked', 'checked');
+    } else {
+        $('input:checkbox').removeAttr('checked');
+    }
+}));
+</script>
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'result-form',
 	'enableAjaxValidation'=>false,
@@ -13,7 +27,7 @@
         ?>
 <table class="items table table-striped table-bordered">
     <tr>
-        <th>Student</th>
+        <th><input type="checkbox" name="checkAll" id="checkAll"> &nbsp; Student</th>
         <th>Internal Marks</th>
         <th>External Marks</th>
     </tr>
@@ -30,7 +44,7 @@
                         $currentStudentInternalMarks=null;
                         $currentStudentExternalMarks=null;
                         if(isset($currentStudentresult) && !empty($currentStudentresult)){
-                            echo "(Already Exist)";
+                            echo "(Result already exist)";
                             $currentStudentInternalMarks=$currentStudentresult->internal_marks;
                             $currentStudentExternalMarks=$currentStudentresult->external_marks;
                         }

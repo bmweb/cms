@@ -28,9 +28,13 @@ class StudentController extends Controller
 	{
 		return array(
 			array('allow',
-                            'actions'=>array('studentAttendance'),
+                            'actions'=>array('studentAttendance','studentResult'),
                             'users'=>array('*'),
                             ),
+                        array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('view','courseFeeDetail'),
+				'expression'=> 'User::isStudent()',
+			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete','addFee','courseFeeDetail'),
 				'expression'=> 'User::isAdmin()',
@@ -47,7 +51,10 @@ class StudentController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
-	{
+	{       
+                if(!Yii::app()->user->isGuest && User::isStudent()){
+                    $id= Yii::app()->user->user_id;
+                }
                 //get courses of the current student
                 $courses = new CActiveDataProvider('StudentCourse',array(
                     'criteria'=>array("condition"=>"student_id=$id")
@@ -62,11 +69,13 @@ class StudentController extends Controller
                 
                 //get student course
                 $studentCourse = StudentCourse::model()->findAll(array("condition"=>"student_id=".$id));
+                $intakes = Intake::model()->findAll();
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
                         'courses'=>$courses,
                         'studentCourseFeeMaps'=>$studentCourseFeeMaps,
-                        'studentCourse'=>$studentCourse
+                        'studentCourse'=>$studentCourse,
+                        'intakes'=>$intakes
 		));
 	}
 
@@ -159,8 +168,10 @@ class StudentController extends Controller
                                         $model->save();
                                     }
                                     //save student course
-                                    $courses = $_POST['course_applied'];
-                                    StudentCourse::setStudentCourse($model->id, $courses);
+                                    if(isset($_POST['course_applied']) && !empty($_POST['course_applied'])){
+                                        $courses = $_POST['course_applied'];
+                                        StudentCourse::setStudentCourse($model->id, $courses);
+                                    }
                                     Yii::app()->user->setFlash('success', 'Student updated successfully');
                                     $this->redirect(array('admin'));
                             }
@@ -310,5 +321,14 @@ class StudentController extends Controller
         $attendances = Attendance::model()->with('classTimeTable')->findAll(array('condition'=>"student_id=".$student_id." and classTimeTable.unit_id=".$unit_id));
         $this->renderPartial('studentAttendance',array('attendances'=>$attendances));
         
+    }
+    public function actionStudentResult(){
+        $student_id = $_POST['student_id'];
+        $course_id = $_POST['course_id'];
+        $intake_id = $_POST['intake_id'];
+        $criteria = new CDbCriteria;
+        $criteria->condition = "student_id=".$student_id." and course_id=".$course_id." and intake_id=".$intake_id;
+        $results = Result::model()->findAll($criteria);
+        $this->renderPartial('studentResult',array('results'=>$results));
     }
 }

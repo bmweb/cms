@@ -29,7 +29,7 @@ class User extends CActiveRecord
         const ADMIN=1;
         const TRAINER=2;
         const CLERK=3;
-        const  STUDENT=4;
+        const STUDENT=4;
 
         /**
 	 * @return string the associated database table name
@@ -114,6 +114,33 @@ class User extends CActiveRecord
         {
             if(!Yii::app()->user->isGuest){
                 if(Yii::app()->user->type==User::ADMIN){
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        function isOfficial()
+        {
+            if(!Yii::app()->user->isGuest){
+                if(Yii::app()->user->type==User::CLERK){
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        function isStudent()
+        {
+            if(!Yii::app()->user->isGuest){
+                if(Yii::app()->user->type==User::STUDENT){
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        function isTrainer()
+        {
+            if(!Yii::app()->user->isGuest){
+                if(Yii::app()->user->type==User::TRAINER){
                     return 1;
                 }
             }

@@ -125,6 +125,7 @@ $this->breadcrumbs=array(
                            // 'method'=>'get',
                     )); ?>
                     <input type="hidden" name="student_id" value="<?php echo $model->id; ?>">
+                    <div  class="well" width="100%">
                     <table>
                         <tr>
                             <td>
@@ -153,6 +154,7 @@ $this->breadcrumbs=array(
                                     'buttonType' => 'submit',
                                     'type'=>'primary',
                                     'label'=>'Show',
+                                    "htmlOptions"=>array("class"=>'marginBottom10'),
                             )); ?>
                             </td>
                         </tr>
@@ -160,25 +162,84 @@ $this->breadcrumbs=array(
                     
 
                     <?php $this->endWidget(); ?>
+                    </div>
                     <div id="studentAttendances">
-                        
+                        <div class="alert marginLeft0">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            No Record Found. Or select the course and unit to show attendance.
+                        </div>
                         
                     </div>
 
                 </div>
                 <div id="results" class="tab-pane fade">
                     <legend class="serif colorCyan">Results</legend>
+                    <div class="well" width="100%">
+                        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                            'action'=>Yii::app()->createUrl($this->route."/".$model->id),
+                            'id'=>'studentResultSearch',
+                           // 'method'=>'get',
+                    )); ?>
+                    <input type="hidden" name="student_id" value="<?php echo $model->id; ?>">
+                    <table>
+                        <tr>
+                            <td>
+                               Intake 
+                            </td>
+                            <td>
+                                <select name="intake_id" id="studentResultIntake" class="marginBottom0">
+                                    <option value=''>Select</option>
+                                    <?php if(isset($intakes) && !empty($intakes)){ 
+                                        foreach ($intakes as $intake){ ?>
+                                        <option value="<?php echo $intake->id; ?>"><?php echo $intake->name; ?></option>
+                                     <?php   }
+                                    } ?>
+                                </select>
+                            </td>
+                            <td>
+                               Course 
+                            </td>
+                            <td>
+                                <select name="course_id" id="studentCourse" class="marginBottom0">
+                                    <option value=''>Select</option>
+                                    <?php if(isset($studentCourse) && !empty($studentCourse)){ 
+                                        foreach ($studentCourse as $courseData){ ?>
+                                        <option value="<?php echo $courseData->course_id; ?>"><?php echo $courseData->course->name; ?></option>
+                                     <?php   }
+                                    } ?>
+                                </select>
+                            </td>
+                            
+                            <td>
+                                <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                    'buttonType' => 'submit',
+                                    'type'=>'primary',
+                                    'label'=>'Show',
+                                    "htmlOptions"=>array("class"=>'marginBottom10'),
+                            )); ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php $this->endWidget(); ?>
+                    </div>
+                    <div id="studentResults">
+                        <div class="alert marginLeft0">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            No Record Found. Or select the intake and course to show result.
+                        </div> 
+                    </div>
                     
-
                 </div>
                 <div id="fees" class="tab-pane fade">
                     <div class="span9">
                         <legend class="serif colorCyan">Fees</legend>
                     </div>
-                    <div>
-                        <a href="#" class="addFee btn btn-info" data-toggle="modal" data-target="#addFeeModal">Add Fee</a>
-                    </div>
-                     <?php
+                    <?php if(!Yii::app()->user->isGuest && User::isStudent() && User::isTrainer()){ ?>
+                        <div>
+                            <a href="#" class="addFee btn btn-info" data-toggle="modal" data-target="#addFeeModal">Add Fee</a>
+                        </div>
+                    <?php } ?>
+                    <?php
                     if (!empty($studentCourseFeeMaps)) {
                         
                             ?>
@@ -226,7 +287,7 @@ $this->breadcrumbs=array(
                     
                       else{
                     ?>
-                    <div class="alert marginTop20">
+                    <div class="alert marginLeft0  span11">
                       <button type="button" class="close" data-dismiss="alert">&times;</button>
                       No Record Found.
                     </div>  
@@ -274,6 +335,11 @@ $(function() {
         studentAttendances();
         return false;
     });
+    $('#studentResultSearch').submit(function() {
+        studentResult();
+        return false;
+    });
+    //studentResultAll();
 });
 function studentAttendances(){
        
@@ -288,6 +354,36 @@ function studentAttendances(){
                 'success': function(data) {
                     $("#studentAttendances").html(data);
                     //$('div#studentAttendances').unblock(); 
+                   
+                }
+            });
+            
+  }
+  function studentResultAll(){
+       
+      
+      $.ajax({
+                'type': 'POST',
+                'data': {student_id:<?php echo $model->id; ?>},
+                'url': '<?php echo Yii::app()->createUrl('student/studentResult') ?>',
+                'success': function(data) {
+                    $("#studentResults").html(data);
+
+                }
+            });
+            
+  }
+  function studentResult(){
+      $.ajax({
+                'type': 'POST',
+                'data': $('#studentResultSearch').serialize(),
+                'url': '<?php echo Yii::app()->createUrl('student/studentResult') ?>',
+                'beforeSend': function(){
+                    //$('div#studentResults').block();
+                },
+                'success': function(data) {
+                    $("#studentResults").html(data);
+                    //$('div#studentResults').unblock(); 
                    
                 }
             });
