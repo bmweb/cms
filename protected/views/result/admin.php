@@ -43,6 +43,11 @@ return false;
 'columns'=>array(
 		//'id',
 		//'student_id',
+                array(
+                    'name'=>'unitName',
+                    'value'=>'$data->unit->name',
+                    'type'=>'raw',
+                ),
 		array(
                     'name'=>'courseName',
                     'value'=>'$data->course->name',
@@ -53,11 +58,7 @@ return false;
                     'value'=>'$data->intake->name',
                     'type'=>'raw',
                 ),
-                array(
-                    'name'=>'unitName',
-                    'value'=>'$data->unit->name',
-                    'type'=>'raw',
-                ),
+                
 		/*'internal_marks',
 		
 		'external_marks',

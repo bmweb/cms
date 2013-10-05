@@ -44,9 +44,15 @@ class ResultController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
-	{
+	{       
+                $model = $this->loadModel($id);
+                $criteria = new CDbCriteria();
+                $criteria->with = array('studentCourses','studentCourses.course.units');
+                $criteria->condition = "studentCourses.intake_id=".$model->intake_id." and units.id=".$model->unit_id." and studentCourses.course_id=".$model->course_id;
+                $students = Student::model()->findAll($criteria);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
+                        'students'=>$students,
 		));
 	}
 

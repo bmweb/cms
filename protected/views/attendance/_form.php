@@ -31,8 +31,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <td>Registration Id</td>
         <td>Name</td>
         <td>Attendance 1</td>
-        <td>Attendance 2</td>
-        
+         
     </tr>
 
 
@@ -48,10 +47,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <td class='attendance'>
                 <?php echo $form->radioButtonList($model, "attendance_detail[$student->id]",array('1'=>'P', '2'=>'A', '3'=>'L'), array('separator'=>'', 'labelOptions'=>array('style'=>'display:inline;'))); ?>
             </td>
-            <td>
-               
-
-            </td>
+            
          </tr>
        
         <?php

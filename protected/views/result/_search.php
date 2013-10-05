@@ -1,3 +1,22 @@
+<script>
+    $(function() {
+        var courseId = <?php echo $model->course_id; ?>;
+        var unitId = <?php echo $model->unit_id; ?>;
+        if(courseId){
+            $.ajax({
+                'type': 'POST',
+                'data': {course_id:courseId},
+                'url': '<?php echo Yii::app()->createUrl('unit/unitByCourse') ?>',
+                'success': function(data) {
+                    $("#Result_unit_id").html(data);
+                    $("#Result_unit_id").val(unitId);
+                }
+            });
+            return false;
+            }
+    });
+</script>
+
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
@@ -35,3 +54,4 @@
 </div>
 
 <?php $this->endWidget(); ?>
+
