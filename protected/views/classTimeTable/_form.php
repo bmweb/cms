@@ -6,10 +6,12 @@
 <p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 <?php echo $form->errorSummary($model); ?>
-    
-                <?php echo $form->dropDownListRow($model, 'intake_id', CHtml::listData(Intake::model()->findAll(), 'id', 'name'), array('class' => 'span5', 'prompt' => '--Select--')); ?>
+<div class="row-fluid">
+
+    <div class="span6">
+                <?php echo $form->dropDownListRow($model, 'intake_id', CHtml::listData(Intake::model()->findAll(), 'id', 'name'), array('class' => 'span10', 'prompt' => '--Select--')); ?>
                 
-        	<?php echo $form->dropDownListRow($model, 'course_id', CHtml::listData(Course::model()->findAll(), 'id', 'name'), array('class' => 'span5', 'prompt' => '--Select--',
+        	<?php echo $form->dropDownListRow($model, 'course_id', CHtml::listData(Course::model()->findAll(), 'id', 'name'), array('class' => 'span10', 'prompt' => '--Select--',
                     'ajax'=>array(
                                     'type'=>'POST',
                                     'data'=>array('course_id'=>"js:this.value"),
@@ -18,7 +20,7 @@
                                 )
                     )); ?>
 
-                <?php echo $form->dropDownListRow($model, 'unit_id', array(), array('class' => 'span5', 'prompt' => '--Select--',
+                <?php echo $form->dropDownListRow($model, 'unit_id', array(), array('class' => 'span10', 'prompt' => '--Select--',
                     'ajax'=>array(
                                     'type'=>'POST',
                                     'data'=>array('unit_id'=>"js:this.value"),
@@ -27,10 +29,11 @@
                                 )
                     )); ?>
         
-        	<?php echo $form->dropDownListRow($model, 'trainer_id',  array(), array('class' => 'span5', 'prompt' => '--Select--')); ?>
+        	<?php echo $form->dropDownListRow($model, 'trainer_id',  array(), array('class' => 'span10', 'prompt' => '--Select--')); ?>
                
-                <?php echo $form->dropDownListRow($model, 'venue_id', CHtml::listData(Venue::model()->findAll(), 'id', 'name'), array('class' => 'span5', 'prompt' => '--Select--')); ?>
-                
+                <?php echo $form->dropDownListRow($model, 'venue_id', CHtml::listData(Venue::model()->findAll(), 'id', 'name'), array('class' => 'span10', 'prompt' => '--Select--')); ?>
+            </div>
+    <div class="span6"> 
                 <?php echo $form->labelEx($model, 'date'); ?> 
                  <?php
                 //Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
@@ -48,8 +51,9 @@
                     'language' => ''
                 ));
                 ?>
+    
                 <?php echo $form->error($model, 'date'); ?>
-        	<?php /*echo $form->datePickerRow($model, 'date', array('class' => 'span5',
+        	<?php /*echo $form->datePickerRow($model, 'date', array('class' => 'span10',
                     'options'=>array(
                         'format'=>'yyyy-mm-dd',
                         'language'=>'en',
@@ -96,7 +100,8 @@
                 
                  ?>
                 <?php echo $form->error($model, 'to_time'); ?>
-
+        </div>
+     </div>
 <div class="form-actions">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

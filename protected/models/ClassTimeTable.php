@@ -55,6 +55,7 @@ class ClassTimeTable extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('course_id, intake_id, unit_id, trainer_id, venue_id, date, from_time, to_time', 'required'),
 			array('course_id, intake_id, unit_id, trainer_id, venue_id', 'numerical', 'integerOnly'=>true),
 			array('date, from_time, to_time, cdate, mdate', 'safe'),
 			// The following rule is used by search().
