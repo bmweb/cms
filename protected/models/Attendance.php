@@ -8,7 +8,7 @@
  * @property integer $class_time_table_id
  * @property integer $student_id
  * @property string $date
- * @property integer $attendance_detail
+ * @property string $attendance_detail
  * @property string $cdate
  * @property string $mdate
  *
@@ -44,8 +44,8 @@ class Attendance extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('class_time_table_id, student_id, attendance_detail', 'numerical', 'integerOnly'=>true),
-			array('date, cdate, mdate', 'safe'),
+			array('class_time_table_id, student_id', 'numerical', 'integerOnly'=>true),
+			array('date, cdate, mdate, attendance_detail', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, class_time_table_id, student_id, date, attendance_detail, cdate, mdate', 'safe', 'on'=>'search'),
@@ -119,5 +119,16 @@ class Attendance extends CActiveRecord
                 $this->date = date ('Y-m-d', $this->date);
             }
             return parent::beforeSave();
+        }
+        public function isAttendanceDone($timeTableId=NULL){
+            
+            if(!empty($timeTableId)){
+                $row = Attendance::model()->findAllByAttributes(array("class_time_table_id"=>$timeTableId));
+                if(!empty($row)){
+                    return "Done";
+                }
+            }
+            return "Pending";
+            
         }
 }

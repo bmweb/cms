@@ -47,6 +47,7 @@ class ClassTimeTable extends CActiveRecord
         public $unitName;
         public $trainerName;
         public $venueName;
+        public $attendance;
         /**
 	 * @return array validation rules for model attributes.
 	 */
@@ -77,6 +78,7 @@ class ClassTimeTable extends CActiveRecord
 			'unit' => array(self::BELONGS_TO, 'Unit', 'unit_id'),
 			'trainer' => array(self::BELONGS_TO, 'Staff', 'trainer_id'),
 			'venue' => array(self::BELONGS_TO, 'Venue', 'venue_id'),
+                        //'attendance' => array(self::HAS_MANY, 'Attendance', 'class_time_table_id'),
 		);
 	}
 
@@ -97,6 +99,7 @@ class ClassTimeTable extends CActiveRecord
 			'to_time' => 'To Time',
 			'cdate' => 'Cdate',
 			'mdate' => 'Mdate',
+                        'attendances'=>'attendance',
 		);
 	}
 
@@ -128,9 +131,13 @@ class ClassTimeTable extends CActiveRecord
                 $criteria->compare('unit.name', $this->unitName, true);
                 $criteria->compare('trainer.first_name', $this->trainerName, true);
                 $criteria->compare('venue.name', $this->venueName, true);
-
+                
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'defaultOrder'=>'date desc',
+                          )
+
 		));
 	}
         public function beforeSave() {

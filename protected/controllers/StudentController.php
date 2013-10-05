@@ -27,7 +27,10 @@ class StudentController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+			array('allow',
+                            'actions'=>array('studentAttendance'),
+                            'users'=>array('*'),
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete','addFee','courseFeeDetail'),
 				'expression'=> 'User::isAdmin()',
@@ -56,10 +59,14 @@ class StudentController extends Controller
                 $criteria->condition = "studentCourse.student_id=$id";
                 $criteria->group = "student_course_id";
                 $studentCourseFeeMaps = StudentCourseFeeMap::model()->findAll($criteria);
+                
+                //get student course
+                $studentCourse = StudentCourse::model()->findAll(array("condition"=>"student_id=".$id));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
                         'courses'=>$courses,
-                        'studentCourseFeeMaps'=>$studentCourseFeeMaps
+                        'studentCourseFeeMaps'=>$studentCourseFeeMaps,
+                        'studentCourse'=>$studentCourse
 		));
 	}
 
@@ -288,4 +295,20 @@ class StudentController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
+        public function actionStudentAttendance(){
+        $attendances = array();
+        $unit_id = null;
+        $course_id = null;
+        $student_id = $_POST['student_id'];
+        if(isset($_POST['unit_id'])){
+            $unit_id = $_POST['unit_id'];
+        }
+        if(isset($_POST['course_id'])){
+            $course_id = $_POST['course_id'];
+        }
+        
+        $attendances = Attendance::model()->with('classTimeTable')->findAll(array('condition'=>"student_id=".$student_id." and classTimeTable.unit_id=".$unit_id));
+        $this->renderPartial('studentAttendance',array('attendances'=>$attendances));
+        
+    }
 }

@@ -40,6 +40,8 @@ return false;
 'dataProvider'=>$model->search(),
 'filter'=>$model,
 'type'=>'striped bordered condensed hover',
+'rowCssClassExpression'=>'Attendance::isAttendanceDone($data->id)=="Done"?"success":""',
+
 'columns'=>array(
 		//'id',
                 'date',
@@ -68,6 +70,11 @@ return false;
                     'value'=>'$data->venue->name',
                     'type'=>'raw',
                 ),
+                array('name'=>'attendance',
+                      'type'=>'text',
+                      'value'=> 'Attendance::isAttendanceDone($data->id)',
+                      //'htmlOptions'=>array('style' => 'text-align: right;'),
+                    ),
 		/*'course_id',
 		'intake_id',
 		'unit_id',
@@ -85,6 +92,18 @@ array(
     'headerHtmlOptions' => array('style'=>'width:80px'),
     'template'=>'{view} {update} {delete} {attendance}',
     'buttons'=>array(
+        'update'=>array(
+        'label'=>'Update',
+            'url'=>'Yii::app()->createUrl("classTimeTable/update", array("id"=>$data->id))',
+            'icon'	=>  'pencil',
+            'visible'=>'Attendance::isAttendanceDone($data->id)=="Done"?"0":"1"'
+        ),
+        'delete'=>array(
+        'label'=>'Delete',
+            'url'=>'Yii::app()->createUrl("classTimeTable/delete", array("id"=>$data->id))',
+            'icon'	=>  'trash',
+            'visible'=>'Attendance::isAttendanceDone($data->id)=="Done"?"0":"1"'
+        ),
         'attendance'=>array(
             'label'=>'Add Attendance',
                 'url'=>'Yii::app()->createUrl("attendance/create", array("id"=>$data->id,"intake"=>$data->intake_id,"unit"=>$data->unit_id))',

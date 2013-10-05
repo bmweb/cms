@@ -22,11 +22,11 @@ $this->breadcrumbs=array(
         <div class="">
 
             <ul id="yw1" class="nav nav-tabs nav-stacked">
-                <li class="active" style="float: none;"><a data-toggle="tab" href="#yw0_tab_1">General Details</a></li>
-                <li class="" style="float: none;"><a data-toggle="tab" href="#yw0_tab_2">Courses</a></li>
-                <li class="" style="float: none;"><a data-toggle="tab" href="#yw0_tab_5">Attendance </a></li>
-                <li class="" style="float: none;"><a data-toggle="tab" href="#yw0_tab_6">Results</a></li>
-                <li class="" style="float: none;"><a data-toggle="tab" href="#yw0_tab_7">Fees</a></li>
+                <li class="active" style="float: none;"><a data-toggle="tab" href="#general">General Details</a></li>
+                <li class="" style="float: none;"><a data-toggle="tab" href="#courses">Courses</a></li>
+                <li class="" style="float: none;"><a data-toggle="tab" href="#attendance">Attendance </a></li>
+                <li class="" style="float: none;"><a data-toggle="tab" href="#results">Results</a></li>
+                <li class="" style="float: none;"><a data-toggle="tab" href="#fees">Fees</a></li>
             </ul>
         </div>
     </div>
@@ -68,7 +68,7 @@ $this->breadcrumbs=array(
         <div>
 
             <div class="tab-content">
-                <div id="yw0_tab_1" class="tab-pane fade active in">
+                <div id="general" class="tab-pane fade active in">
                     <legend class="serif colorCyan">Contact Details</legend>
                     <table class="items table table-striped table-bordered">
                         <tr>
@@ -97,7 +97,7 @@ $this->breadcrumbs=array(
                         </tr>
                      </table>
                 </div>
-                <div id="yw0_tab_2" class="tab-pane fade">
+                <div id="courses" class="tab-pane fade">
                     <legend class="serif colorCyan">Courses</legend>
                     <?php 
                     
@@ -117,7 +117,61 @@ $this->breadcrumbs=array(
                     ?>
 
                 </div>
-                <div id="yw0_tab_7" class="tab-pane fade">
+                <div id="attendance" class="tab-pane fade">
+                    <legend class="serif colorCyan">Attendance</legend>
+                    <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                            'action'=>Yii::app()->createUrl($this->route."/".$model->id),
+                            'id'=>'studentAttendanceSearch',
+                           // 'method'=>'get',
+                    )); ?>
+                    <input type="hidden" name="student_id" value="<?php echo $model->id; ?>">
+                    <table>
+                        <tr>
+                            <td>
+                               Course 
+                            </td>
+                            <td>
+                                <select name="course_id" id="studentCourse" class="marginBottom0">
+                                    <option value=''>Select</option>
+                                    <?php if(isset($studentCourse) && !empty($studentCourse)){ 
+                                        foreach ($studentCourse as $courseData){ ?>
+                                        <option value="<?php echo $courseData->course_id; ?>"><?php echo $courseData->course->name; ?></option>
+                                     <?php   }
+                                    } ?>
+                                </select>
+                            </td>
+                            <td>
+                                Unit
+                            </td>
+                            <td>
+                                <select name="unit_id"  class="marginBottom0" id="studentCourseUnit">
+                                    <option value=''>Select</option>
+                                </select>    
+                            </td>
+                            <td>
+                                <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                    'buttonType' => 'submit',
+                                    'type'=>'primary',
+                                    'label'=>'Show',
+                            )); ?>
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                    <?php $this->endWidget(); ?>
+                    <div id="studentAttendances">
+                        
+                        
+                    </div>
+
+                </div>
+                <div id="results" class="tab-pane fade">
+                    <legend class="serif colorCyan">Results</legend>
+                    
+
+                </div>
+                <div id="fees" class="tab-pane fade">
                     <div class="span9">
                         <legend class="serif colorCyan">Fees</legend>
                     </div>
@@ -201,6 +255,44 @@ $('a.addFee').click(function(e) {
 
             $('#addFeeModel').modal('show');
         });
+        
+$(function() {
+    $("#studentCourse").change(function(){
+        var student_course_id = $(this).val();
+       $.ajax({
+                'type': 'POST',
+                'data': {course_id:student_course_id},
+                'url': '<?php echo Yii::app()->createUrl('unit/unitByCourse') ?>',
+                'success': function(data) {
+                    $("#studentCourseUnit").html(data);
+
+                }
+            });
+            return false;
+    });
+    $('#studentAttendanceSearch').submit(function() {
+        studentAttendances();
+        return false;
+    });
+});
+function studentAttendances(){
+       
+      
+      $.ajax({
+                'type': 'POST',
+                'data': $('#studentAttendanceSearch').serialize(),
+                'url': '<?php echo Yii::app()->createUrl('student/studentAttendance') ?>',
+                'beforeSend': function(){
+                    //$('div#studentAttendances').block();
+                },
+                'success': function(data) {
+                    $("#studentAttendances").html(data);
+                    //$('div#studentAttendances').unblock(); 
+                   
+                }
+            });
+            
+  }
 </script>
     
     

@@ -24,10 +24,10 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 		
 		array('label' => 'Students', 'visible' => !Yii::app()->user->isGuest, 'items' => array(
 			array('label' => 'List', 'url' => array('student/admin')),
-                        array('label' => 'Attendance', 'url' => array('attendance/admin')),
+                       // array('label' => 'Attendance', 'url' => array('attendance/admin')),
 			array('label' => 'Results', 'url' => array('result/admin')),
-			'---',
-                        array('label' => 'Add Student Fee', 'url' => array('fee/create')),
+			//'---',
+                        //array('label' => 'Add Student Fee', 'url' => array('fee/create')),
 			)),
                 array('label' => 'Time Table', 'url' => array('classTimeTable/admin'), 'visible' => !Yii::app()->user->isGuest),
 	
