@@ -19,9 +19,9 @@ $studentCourse = StudentCourse::model()->findAll($criteria);
 
                 <td><?php echo $data->course->name; ?></td>
                 <td><?php echo $data->intake->name; ?></td>
-                <td><?php echo Yii::app()->locale->getCurrencySymbol('AUD') . $data->course_fee; ?></td>
+                <td><?php echo "Rs". $data->course_fee; ?></td>
                 <td><input type="hidden" id="student_course_id" name="student_course_id[]" value="<?php echo $data->id; ?>">
-                    <?php echo Yii::app()->locale->getCurrencySymbol('AUD') ?><input type="text" name="paid_fee[]" id="paid_fee">
+                    <?php echo "Rs"; ?><input type="text" name="paid_fee[]" id="paid_fee">
                 </td>
 
             </tr>   

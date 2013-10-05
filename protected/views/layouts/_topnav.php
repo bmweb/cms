@@ -38,7 +38,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 			)),
                 array('label' => 'Time Table', 'url' => array('classTimeTable/admin'), 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial())),
                 // student my profile
-                array('label' => 'My Profile', 'url' => array('student/'.$studentId), 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial())),
+                array('label' => 'My Profile', 'url' => array('student/'.$studentId), 'visible' => !Yii::app()->user->isGuest && User::isStudent()),
 	
                 
               ),

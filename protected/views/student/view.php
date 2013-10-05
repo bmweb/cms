@@ -234,7 +234,7 @@ $this->breadcrumbs=array(
                     <div class="span9">
                         <legend class="serif colorCyan">Fees</legend>
                     </div>
-                    <?php if(!Yii::app()->user->isGuest && User::isStudent() && User::isTrainer()){ ?>
+                    <?php if(!Yii::app()->user->isGuest && !User::isStudent() && !User::isTrainer()){ ?>
                         <div>
                             <a href="#" class="addFee btn btn-info" data-toggle="modal" data-target="#addFeeModal">Add Fee</a>
                         </div>
@@ -257,8 +257,8 @@ $this->breadcrumbs=array(
                                   
                                         <td><?php echo $studentfee->studentCourse->course->name; ?></td>
                                         <td><?php echo $studentfee->studentCourse->intake->name; ?></td>
-                                        <td><?php echo Yii::app()->locale->getCurrencySymbol('AUD').$studentfee->studentCourse->course_fee; ?></td>
-                                        <td><?php echo Yii::app()->locale->getCurrencySymbol('AUD').$studentfee->paid_fee; ?></td>
+                                        <td><?php echo "Rs".$studentfee->studentCourse->course_fee; ?></td>
+                                        <td><?php echo "Rs".$studentfee->paid_fee; ?></td>
                                         
                                         <td>
                                             <a href="#"  data-toggle="modal" data-target="#viewFeeDetailModel<?php echo $studentfee->student_course_id; ?>" class="viewFeeDetail<?php echo $studentfee->student_course_id; ?>" alt="view fee detail">
