@@ -112,8 +112,10 @@ class StudentController extends Controller
                                         $model->save();
                                     }
                                     //save student course
-                                    $courses = $_POST['course_applied'];
-                                    StudentCourse::setStudentCourse($model->id, $courses);
+                                    if(isset($_POST['course_applied']) && !empty($_POST['course_applied'])){
+                                        $courses = $_POST['course_applied'];
+                                        StudentCourse::setStudentCourse($model->id, $courses);
+                                    }
                                     Yii::app()->user->setFlash('success', 'Student added successfully');
                                     $this->redirect(array('admin'));
                             }
