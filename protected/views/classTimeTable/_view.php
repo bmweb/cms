@@ -1,50 +1,29 @@
-<div class="view">
-
-		<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('course_id')); ?>:</b>
-	<?php echo CHtml::encode($data->course_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('intake_id')); ?>:</b>
-	<?php echo CHtml::encode($data->intake_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('unit_id')); ?>:</b>
-	<?php echo CHtml::encode($data->unit_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('trainer_id')); ?>:</b>
-	<?php echo CHtml::encode($data->trainer_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('venue_id')); ?>:</b>
-	<?php echo CHtml::encode($data->venue_id); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('date')); ?>:</b>
-	<?php echo CHtml::encode($data->date); ?>
-	<br />
-
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('from_time')); ?>:</b>
-	<?php echo CHtml::encode($data->from_time); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('to_time')); ?>:</b>
-	<?php echo CHtml::encode($data->to_time); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('cdate')); ?>:</b>
-	<?php echo CHtml::encode($data->cdate); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('mdate')); ?>:</b>
-	<?php echo CHtml::encode($data->mdate); ?>
-	<br />
-
-	*/ ?>
-
+<div class="span4">
+<div class="widget widget-nopad stacked">
+    <div class="widget-header">
+        <i class="icon-list-alt"></i>
+        <h3><?php echo ucwords($data->unit->name); ?></h3>
+    </div>
+    <div class="widget-content">
+        <ul class="news-items">
+            <li>
+                <!--break date-->
+                <?php 
+                    $date = explode('-', $data->date);
+                    $day = $date[0];
+                    $month = $date[1];
+                ?>
+                <div class="news-item-date">
+                    <span class="news-item-day"><?php echo $day; ?></span>
+                    <span class="news-item-month"><?php echo $month; ?></span>
+                </div>
+                <div class="news-item-detail">
+                    <span class="news-item-title">Venue : <?php echo ucwords($data->venue->name); ?></span>
+                    <p class="news-item-preview">Trainer : <?php echo ucwords($data->trainer->fullname); ?></p>
+                </div>
+                
+            </li>
+        </ul>
+    </div>
+</div>
 </div>

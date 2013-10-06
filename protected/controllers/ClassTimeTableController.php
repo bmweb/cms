@@ -27,7 +27,10 @@ class ClassTimeTableController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+			array('allow',
+                            'actions'=>array('myClassTime'),
+                            'expression'=>'User::isStudent()',
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete'),
 				'expression'=> 'User::isAdmin() || User::isOfficial()',
@@ -173,4 +176,38 @@ class ClassTimeTableController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionMyClassTime(){
+            //student id
+//            $stuId = Yii::app()->user->user_id;
+//            //get student course
+//            $studentCourse = StudentCourse::model()->findAll(array("condition"=>"student_id=".$stuId));
+//            $courseArray = array();
+//            if(!empty($studentCourse)){
+//                foreach($studentCourse as $course){
+//                    $courseArray[] = $course->course_id;
+//                }
+//            }
+            $model=new ClassTimeTable;
+            $dataProvider = array();
+            $todayDate = date('Y-m-d');
+            if (isset($_REQUEST['search'])) {
+                $model->attributes=$_GET['ClassTimeTable'];
+                if(isset($_GET['ClassTimeTable']['intake_id']) && $_GET['ClassTimeTable']['unit_id'] && $_GET['ClassTimeTable']['course_id']){
+                    //$model->attributes=$_GET['ClassTimeTable'];
+                    $intake = $_GET['ClassTimeTable']['intake_id'];
+                    $course = $_GET['ClassTimeTable']['course_id'];
+                    $unit = $_GET['ClassTimeTable']['unit_id'];
+                    $criteria = new CDbCriteria;
+                    $criteria->condition = "intake_id=".$intake." and course_id=".$course." and unit_id=".$unit." and date>='".$todayDate."'";
+                    $dataProvider=new CActiveDataProvider('ClassTimeTable',array(
+                        'criteria'=>$criteria,
+                        'pagination'=>array('pageSize'=>12),
+                    ));
+                   // $classTimeArray = ClassTimeTable::model()->findAll($criteria);
+                }else{
+                    Yii::app()->user->setFlash('error', 'Select intake, course and unit');
+                }
+            }
+            $this->render('myClassTime',array('model'=>$model,'dataProvider'=>$dataProvider));
+        }
 }

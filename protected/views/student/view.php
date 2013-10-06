@@ -1,3 +1,4 @@
+<?php //Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/jquery.blockUI.js'); ?>
 <?php
 $this->breadcrumbs=array(
 	'Students'=>array('index'),
@@ -351,11 +352,11 @@ function studentAttendances(){
                 'data': $('#studentAttendanceSearch').serialize(),
                 'url': '<?php echo Yii::app()->createUrl('student/studentAttendance') ?>',
                 'beforeSend': function(){
-                    //$('div#studentAttendances').block();
+                  //  $('div#studentAttendances').block();
                 },
                 'success': function(data) {
                     $("#studentAttendances").html(data);
-                    //$('div#studentAttendances').unblock(); 
+                  //  $('div#studentAttendances').unblock(); 
                    
                 }
             });

@@ -156,4 +156,9 @@ class ClassTimeTable extends CActiveRecord
             }
             return parent::beforeSave();
         }
+        public function afterFind(){
+            $this->date = strtotime ($this->date);
+            $this->date = date ('d-M-Y', $this->date);
+            return parent::afterFind();
+        }
 }
