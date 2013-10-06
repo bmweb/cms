@@ -31,6 +31,10 @@ class ClassTimeTableController extends Controller
                             'actions'=>array('myClassTime'),
                             'expression'=>'User::isStudent()',
                             ),
+                        array('allow',
+                            'actions'=>array('trainerClassTime'),
+                            'expression'=>'User::isTrainer()',
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete'),
 				'expression'=> 'User::isAdmin() || User::isOfficial()',
@@ -177,22 +181,13 @@ class ClassTimeTableController extends Controller
 		}
 	}
         public function actionMyClassTime(){
-            //student id
-//            $stuId = Yii::app()->user->user_id;
-//            //get student course
-//            $studentCourse = StudentCourse::model()->findAll(array("condition"=>"student_id=".$stuId));
-//            $courseArray = array();
-//            if(!empty($studentCourse)){
-//                foreach($studentCourse as $course){
-//                    $courseArray[] = $course->course_id;
-//                }
-//            }
+         
             $model=new ClassTimeTable;
             $dataProvider = array();
             $todayDate = date('Y-m-d');
             if (isset($_REQUEST['search'])) {
                 $model->attributes=$_GET['ClassTimeTable'];
-                if(isset($_GET['ClassTimeTable']['intake_id']) && $_GET['ClassTimeTable']['unit_id'] && $_GET['ClassTimeTable']['course_id']){
+                if(isset($_GET['ClassTimeTable']['intake_id']) && isset($_GET['ClassTimeTable']['unit_id']) && isset($_GET['ClassTimeTable']['course_id']) && !empty($_GET['ClassTimeTable']['intake_id']) && !empty($_GET['ClassTimeTable']['unit_id']) && !empty($_GET['ClassTimeTable']['course_id'])){
                     //$model->attributes=$_GET['ClassTimeTable'];
                     $intake = $_GET['ClassTimeTable']['intake_id'];
                     $course = $_GET['ClassTimeTable']['course_id'];
@@ -210,5 +205,39 @@ class ClassTimeTableController extends Controller
                 }
             }
             $this->render('myClassTime',array('model'=>$model,'dataProvider'=>$dataProvider));
+        }
+         public function actionTrainerClassTime(){
+         
+            $model=new ClassTimeTable;
+            $dataProvider = array();
+            $trainerId = Yii::app()->user->user_id;
+            $todayDate = date('Y-m-d');
+            if (isset($_REQUEST['search'])) {
+                $model->attributes=$_GET['ClassTimeTable'];
+                if(isset($_GET['ClassTimeTable']['intake_id']) && isset($_GET['ClassTimeTable']['unit_id']) && !empty($_GET['ClassTimeTable']['intake_id']) && !empty($_GET['ClassTimeTable']['unit_id'])){
+                    //$model->attributes=$_GET['ClassTimeTable'];
+                    $intake = $_GET['ClassTimeTable']['intake_id'];
+                    $unit = $_GET['ClassTimeTable']['unit_id'];
+                    $criteria = new CDbCriteria;
+                    $criteria->condition = "intake_id=".$intake." and unit_id=".$unit." and trainer_id=".$trainerId." and date>='".$todayDate."'";
+                    $criteria->order = 'date';
+                    $dataProvider=new CActiveDataProvider('ClassTimeTable',array(
+                        'criteria'=>$criteria,
+                        'pagination'=>array('pageSize'=>12),
+                    ));
+                   // $classTimeArray = ClassTimeTable::model()->findAll($criteria);
+                }else{
+                    Yii::app()->user->setFlash('error', 'Select intake and unit');
+                }
+            }  else {
+                    $criteria = new CDbCriteria;
+                    $criteria->condition = "trainer_id=".$trainerId." and date>='".$todayDate."'";
+                    $criteria->order = 'date';
+                    $dataProvider=new CActiveDataProvider('ClassTimeTable',array(
+                        'criteria'=>$criteria,
+                        'pagination'=>array('pageSize'=>12),
+                    ));
+            }
+            $this->render('trainerClassTime',array('model'=>$model,'dataProvider'=>$dataProvider));
         }
 }

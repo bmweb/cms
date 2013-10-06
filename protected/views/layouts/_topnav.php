@@ -40,6 +40,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
                 // student my profile
                 array('label' => 'My Profile', 'url' => array('student/'.$studentId), 'visible' => !Yii::app()->user->isGuest && User::isStudent()),
                 array('label' => 'Time Table', 'url' => array('classTimeTable/myClassTime'), 'visible' => !Yii::app()->user->isGuest && User::isStudent()),
+                array('label' => 'Time Table', 'url' => array('classTimeTable/trainerClassTime'), 'visible' => !Yii::app()->user->isGuest && User::isTrainer()),
                 
                 
               ),

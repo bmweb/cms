@@ -12,8 +12,8 @@ array('label'=>'Manage Result','url'=>array('admin')),
 
 <?php Yii::app()->params['mod_title'] = 'Class Vanue';?>
 <div class="well">
-<?php echo $this->renderPartial('_search', array('model'=>$model)); ?>
-</div>    
+    <?php echo $this->renderPartial('_trainerSearch', array('model'=>$model)); ?>
+</div>
 <div class="row">
     <?php 
     if($dataProvider){
@@ -25,10 +25,5 @@ array('label'=>'Manage Result','url'=>array('admin')),
             Sorry no record found.
         </div>'   
     )); 
-    }else{ ?>
-        <div class="alert marginLeft0">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Please select the intake, course and unit to show class venue.
-        </div>
-   <?php } ?>
+    } ?>
 </div>
