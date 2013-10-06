@@ -14,7 +14,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 	array(
 	    'class' => 'bootstrap.widgets.TbMenu',
 	    'items' => array(
-		array('label' => 'Home', 'url' => '#', 'active' => true),
+		array('label' => 'Home', 'url' => array('site/index'), 'active' => true),
 		array('label' => 'Login', 'url' => array('site/login'), 'visible' => Yii::app()->user->isGuest),
 		array('label' => 'My Office', 'visible' => !Yii::app()->user->isGuest && (User::isAdmin() || User::isOfficial()), 'items' => array(
 			array('label' => 'Courses', 'url' => array('course/admin')),

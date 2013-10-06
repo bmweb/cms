@@ -238,7 +238,9 @@ $this->breadcrumbs=array(
                         <div>
                             <a href="#" class="addFee btn btn-info" data-toggle="modal" data-target="#addFeeModal">Add Fee</a>
                         </div>
-                    <?php } ?>
+                    <?php }else{ ?>
+                    <div>&nbsp;</div>
+                  <?php  } ?>
                     <?php
                     if (!empty($studentCourseFeeMaps)) {
                         
