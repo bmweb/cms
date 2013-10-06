@@ -6,7 +6,13 @@ if(!Yii::app()->user->isGuest && User::isStudent()){
 else{
     $studentId = null;
 }
-
+//set logged trainer id
+if(!Yii::app()->user->isGuest && User::isTrainer()){
+    $trainerId = Yii::app()->user->user_id;
+}
+else{
+    $trainerId = null;
+}
 $this->widget('bootstrap.widgets.TbNavbar', array(
     'brand' => Yii::app()->name,
     'type' => 'inverse',
@@ -41,6 +47,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
                 array('label' => 'My Profile', 'url' => array('student/'.$studentId), 'visible' => !Yii::app()->user->isGuest && User::isStudent()),
                 array('label' => 'Time Table', 'url' => array('classTimeTable/myClassTime'), 'visible' => !Yii::app()->user->isGuest && User::isStudent()),
                 array('label' => 'Time Table', 'url' => array('classTimeTable/trainerClassTime'), 'visible' => !Yii::app()->user->isGuest && User::isTrainer()),
+                array('label' => 'My Profile', 'url' => array('staff/'.$trainerId), 'visible' => !Yii::app()->user->isGuest && User::isTrainer()),
                 
                 
               ),

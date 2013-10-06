@@ -31,6 +31,10 @@ class StaffController extends Controller
                             'actions'=>array('uploadprofile'),
                             'users'=>array('*'),
                             ),
+                        array('allow',
+                            'actions'=>array('view'),
+                            'expression'=>'User::isTrainer()',
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete','trainerByUnit'),
 				'expression'=> 'User::isAdmin() || User::isOfficial()',
@@ -48,6 +52,9 @@ class StaffController extends Controller
 	 */
 	public function actionView($id)
 	{
+                if(!Yii::app()->user->isGuest && User::isTrainer()){
+                    $id= Yii::app()->user->user_id;
+                }
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));

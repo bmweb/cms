@@ -1,6 +1,23 @@
 <?php 
                     if (!empty($attendances)) {
                         $i=1; ?>
+                        <?php $totalAttendance  = count($attendances); 
+                               $apperance = round(($totalPresent/$totalAttendance)*100); 
+                               if($apperance>75){
+                                   $progressType = 'bar-success';
+                               }  else {
+                                   $progressType = 'bar-danger';
+                               }
+                        ?>
+                            <div class="progress progress-striped active">
+                                <div class="bar <?php echo $progressType; ?>" style="width: <?php echo $apperance."%"; ?>;"><?php echo $apperance."%"; ?></div>
+                            </div>
+                        <?php /* $this->widget('bootstrap.widgets.TbProgress', array(
+                            'type'=>$progressType, // 'info', 'success' or 'danger'
+                            'percent'=>$apperance, // the progress
+                            'striped'=>true,
+                            'animated'=>true,
+                        )); */ ?>
                         <table class="items table table-striped table-bordered">   
                         <?php foreach ($attendances as $attendance) {
                             ?>

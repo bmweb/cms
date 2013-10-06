@@ -319,9 +319,11 @@ class StudentController extends Controller
         if(isset($_POST['course_id'])){
             $course_id = $_POST['course_id'];
         }
-        
+        //get total presents
+        $row = Attendance::model()->with('classTimeTable')->findAll(array('condition'=>"student_id=".$student_id." and classTimeTable.unit_id=".$unit_id." and attendance_detail='P'"));
+        $totalPresent = count($row);
         $attendances = Attendance::model()->with('classTimeTable')->findAll(array('condition'=>"student_id=".$student_id." and classTimeTable.unit_id=".$unit_id));
-        $this->renderPartial('studentAttendance',array('attendances'=>$attendances));
+        $this->renderPartial('studentAttendance',array('attendances'=>$attendances,'totalPresent'=>$totalPresent));
         
     }
     public function actionStudentResult(){
