@@ -27,7 +27,10 @@ class StaffController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+			array('allow',
+                            'actions'=>array('uploadprofile'),
+                            'users'=>array('*'),
+                            ),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','view','create','update','admin','delete','trainerByUnit'),
 				'expression'=> 'User::isAdmin() || User::isOfficial()',
@@ -78,7 +81,7 @@ class StaffController extends Controller
                                     $imageName = $model->photo->name;
                                     $model->photo->saveAs('uploads/staff/'.$imageName);
                                     $image = Yii::app()->image->load('uploads/staff/'.$imageName);
-                                    $image->resize(200, 200);
+                                    $image->resize(300, 300);
                                     $image->save('uploads/staff/thumb-'.$imageName);
                                     $model->photo_path = "/uploads/staff/".$imageName;
                                     $model->save();
@@ -132,7 +135,7 @@ class StaffController extends Controller
                                         $imageName = $model->photo->name;
                                         $model->photo->saveAs('uploads/staff/'.$imageName);
                                         $image = Yii::app()->image->load('uploads/staff/'.$imageName);
-                                        $image->resize(200, 200);
+                                        $image->resize(300, 300);
                                         $image->save('uploads/staff/thumb-'.$imageName);
                                         $model->photo_path = "/uploads/staff/".$imageName;
                                         $model->save();
@@ -230,5 +233,39 @@ class StaffController extends Controller
                 {
                         echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
                 }
+        }
+        public function actionUploadprofile()
+        {
+
+                $targetFolder = Yii::app()->basePath.'/../uploads/staff';
+                if (!empty($_FILES)) {
+
+                    $tempFile = $_FILES['Filedata']['tmp_name'];
+                    $targetPath = $targetFolder;
+                    $targetFile = rtrim($targetPath,'/') . '/' .$_REQUEST['sid'].$_FILES['Filedata']['name'];
+                    if (!move_uploaded_file($tempFile,$targetFile)){
+                            echo "Your file was not moved! ";	
+                    } else {
+                            echo  $_REQUEST['sid'].$_FILES['Filedata']['name'];
+                            $image = Yii::app()->image->load('uploads/staff/'.$_REQUEST['sid'].$_FILES['Filedata']['name']);
+                            $image->resize(300,300);
+                            $image->save('uploads/staff/thumb-'.$_REQUEST['sid'].$_FILES['Filedata']['name']);
+                            }
+
+
+                    /*
+                     * Add the model related code here
+                     */
+                    $model = Staff::model()->findByPk($_REQUEST['sid']);
+                    $model->photo= $_REQUEST['sid'].$_FILES['Filedata']['name'];
+                    $model->save();
+
+                    /*
+                     * This line is very important, please do not remove it
+                     * else you will get HTTP 500 error
+                     */
+                    Yii::app()->end();
+            }
+
         }
 }

@@ -28,7 +28,7 @@ class StudentController extends Controller
 	{
 		return array(
 			array('allow',
-                            'actions'=>array('studentAttendance','studentResult'),
+                            'actions'=>array('studentAttendance','studentResult','uploadprofile'),
                             'users'=>array('*'),
                             ),
                         array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -106,7 +106,7 @@ class StudentController extends Controller
                                         $imageName = $model->photo->name;
                                         $model->photo->saveAs('uploads/student/'.$imageName);
                                         $image = Yii::app()->image->load('uploads/student/'.$imageName);
-                                        $image->resize(200, 200);
+                                        $image->resize(300, 300);
                                         $image->save('uploads/student/thumb-'.$imageName);
                                         $model->photo_path = "/uploads/student/".$imageName;
                                         $model->save();
@@ -164,7 +164,7 @@ class StudentController extends Controller
                                         $imageName = $model->photo->name;
                                         $model->photo->saveAs('uploads/student/'.$imageName);
                                         $image = Yii::app()->image->load('uploads/student/'.$imageName);
-                                        $image->resize(200, 200);
+                                        $image->resize(300, 300);
                                         $image->save('uploads/student/thumb-'.$imageName);
                                         $model->photo_path = "/uploads/student/".$imageName;
                                         $model->save();
@@ -333,4 +333,39 @@ class StudentController extends Controller
         $results = Result::model()->findAll($criteria);
         $this->renderPartial('studentResult',array('results'=>$results));
     }
+    public function actionUploadprofile()
+        {
+
+                $targetFolder = Yii::app()->basePath.'/../uploads/student';
+                if (!empty($_FILES)) {
+
+                    $tempFile = $_FILES['Filedata']['tmp_name'];
+                    $targetPath = $targetFolder;
+                    $targetFile = rtrim($targetPath,'/') . '/' .$_REQUEST['sid'].$_FILES['Filedata']['name'];
+                    if (!move_uploaded_file($tempFile,$targetFile)){
+                            echo "Your file was not moved! ";	
+                    } else {
+                            echo  $_REQUEST['sid'].$_FILES['Filedata']['name'];
+                            $image = Yii::app()->image->load('uploads/student/'.$_REQUEST['sid'].$_FILES['Filedata']['name']);
+                            $image->resize(300,300);
+                            $image->save('uploads/student/thumb-'.$_REQUEST['sid'].$_FILES['Filedata']['name']);
+                            	
+                            }
+
+
+                    /*
+                     * Add the model related code here
+                     */
+                    $model = Student::model()->findByPk($_REQUEST['sid']);
+                    $model->photo= $_REQUEST['sid'].$_FILES['Filedata']['name'];
+                    $model->save();
+
+                    /*
+                     * This line is very important, please do not remove it
+                     * else you will get HTTP 500 error
+                     */
+                    Yii::app()->end();
+            }
+
+        }
 }
