@@ -83,7 +83,7 @@ class Staff extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'country' => array(self::BELONGS_TO, 'Country', 'country_id'),
-			'type0' => array(self::BELONGS_TO, 'StaffType', 'type'),
+			'staffType' => array(self::BELONGS_TO, 'StaffType', 'type'),
 			'staffUnitMappings' => array(self::HAS_MANY, 'StaffUnitMapping', 'staff_id'),
 		);
 	}
@@ -170,5 +170,14 @@ class Staff extends CActiveRecord
         public function getFullname()
         {
             return ucwords($this->first_name.' '.$this->last_name);
+        }
+        public function getFullsex()
+        {
+            return ($this->sex=='M')?"Male":"Female";
+        }
+        public function afterFind(){
+            $this->join_date = strtotime ($this->join_date);
+            $this->join_date = date ('d-M-Y', $this->join_date);
+            return parent::afterFind();
         }
 }

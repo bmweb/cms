@@ -116,10 +116,10 @@ class ClassTimeTable extends CActiveRecord
                 $criteria->with = array('course','intake','unit','trainer','venue');
                 
 		$criteria->compare('t.id',$this->id);
-		$criteria->compare('course_id',$this->course_id);
-		$criteria->compare('intake_id',$this->intake_id);
-		$criteria->compare('unit_id',$this->unit_id);
-		$criteria->compare('trainer_id',$this->trainer_id);
+		$criteria->compare('t.course_id',$this->course_id);
+		$criteria->compare('t.intake_id',$this->intake_id);
+		$criteria->compare('t.unit_id',$this->unit_id);
+		$criteria->compare('t.trainer_id',$this->trainer_id);
 		$criteria->compare('venue_id',$this->venue_id);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('from_time',$this->from_time,true);

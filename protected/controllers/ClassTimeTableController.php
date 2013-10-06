@@ -199,6 +199,7 @@ class ClassTimeTableController extends Controller
                     $unit = $_GET['ClassTimeTable']['unit_id'];
                     $criteria = new CDbCriteria;
                     $criteria->condition = "intake_id=".$intake." and course_id=".$course." and unit_id=".$unit." and date>='".$todayDate."'";
+                    $criteria->order = 'date';
                     $dataProvider=new CActiveDataProvider('ClassTimeTable',array(
                         'criteria'=>$criteria,
                         'pagination'=>array('pageSize'=>12),
