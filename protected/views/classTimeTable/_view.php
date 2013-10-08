@@ -19,6 +19,7 @@
                 </div>
                 <div class="news-item-detail">
                     <span class="news-item-title">Venue : <?php echo ucwords($data->venue->name); ?></span>
+                    <p class="news-item-preview"><strong>Time : </strong>  <?php echo $data->from_time; ?> to <?php echo $data->to_time; ?></p>
                     <p class="news-item-preview">Trainer : <?php echo ucwords($data->trainer->fullname); ?></p>
                 </div>
                 
